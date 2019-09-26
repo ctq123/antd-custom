@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Form, Input, Button } from 'antd'
-import './Login.css'
+import './styles.css'
 
 const FormItem = Form.Item
 class LoginForm extends PureComponent {

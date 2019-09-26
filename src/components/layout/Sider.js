@@ -72,6 +72,7 @@ class Sider extends PureComponent {
         <Menu theme="dark" 
           mode="inline" 
           onClick={this.onClick}
+          defaultSelectedKeys={['1']}
           >
           {this.generateMenuItem(menus)}
         </Menu>
