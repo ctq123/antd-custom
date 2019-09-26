@@ -10,9 +10,19 @@ const Home = (props) => {
     })
   }
 
+  const onIncrementAsync = (e) => {
+    props.dispatch({
+      type: 'INCREMENT_ASYNC',
+      payload: {
+        data: 10,
+      },
+    })
+  }
+
   return (
     <aside>
       <Button type='primary' onClick={onIncrement}>+1</Button>
+      <Button type='primary' onClick={onIncrementAsync} loading={props.loading}>+10</Button>
       <h4>count: { props.count }</h4>
     </aside>
   )
