@@ -1,0 +1,28 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8f8f8;
+}
+.login-form {
+  width: 320px;
+  height: 290px;
+  padding: 36px;
+  box-shadow: 0 0 100px rgba(0,0,0,.08);
+}
+
+.login-form button {
+  width: 100%;
+}
+
+.login-form p {
+  color: #ccc;
+  margin-top: 16px;
+  font-size: 12px;
+}
+
+.login-form .span-right {
+  float: right;
+}
