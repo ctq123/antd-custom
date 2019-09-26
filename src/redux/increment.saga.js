@@ -1,5 +1,5 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
-import { increment } from './increment.api'
+import { increment } from '../api/increment.api'
 
 export function* incrementAsync({ type, payload }) {
   const resp = yield call(increment, payload)
