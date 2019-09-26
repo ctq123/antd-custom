@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button } from 'antd'
 import { connect } from 'react-redux'
-import incrementAction from '../../redux/increment.action'
 
 const Home = (props) => {
   const onIncrement = (e) => {
-    props.dispatch(incrementAction(1))
+    props.dispatch({
+      type: 'INCREMENT',
+      payload: 1,
+    })
   }
 
   return (
