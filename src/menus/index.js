@@ -9,18 +9,18 @@ export const menus = [
 ]
 
 export function getMenusMap(key = 'key') {
-  let res = {}
-  const gen = (list) => {
+  const menusMap = {}
+  const generateMap = (list) => {
     list.map(item => {
       const { children } = item || {}
       if (children && children.length) {
-        gen(children)
+        generateMap(children)
       }
-      res[item[key]] = item
+      menusMap[item[key]] = item
     })
   }
-  gen(menus)
-  return res
+  generateMap(menus)
+  return menusMap
 }
 
 export default menus

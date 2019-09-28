@@ -11,7 +11,7 @@ class Sider extends PureComponent {
   constructor(props) {
     super(props)
     const { pathname } = (props.history && props.history.location) || {}
-    this.historyListener(props.history)
+    this.historyListener(props)
     this.state = {
       selectedKey: pathname,
       defaultOpenKeys: this.getDefaultOpenKeys(pathname),
@@ -22,11 +22,13 @@ class Sider extends PureComponent {
     this.unlisten && this.unlisten()
   }
 
-  historyListener = (history) => {
+  historyListener = (props) => {
+    const { existRoute, history } = props
     // 处理输入url地址，触发菜单栏活动页
     this.unlisten = history && history.listen(location => {
       const { pathname } = location || {}
-      if (pathname) {
+      console.log("Breadcrumbs location", location)
+      if (pathname && existRoute[pathname]) {
         this.setState({
           selectedKey: pathname
         })

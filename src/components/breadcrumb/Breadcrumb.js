@@ -24,6 +24,7 @@ class Breadcrumbs extends PureComponent {
     // 处理输入url地址，触发面包屑变化
     this.unlisten = history && history.listen(location => {
       const { pathname } = location || {}
+      // console.log("Breadcrumbs location", location)
       if (pathname) {
         let items = this.getItems(pathname)
         this.setState({
