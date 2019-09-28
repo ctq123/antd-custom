@@ -1,7 +1,7 @@
 module.exports = {
-  presets:[
-    ['env', { 'modules': false }]
-  ],
+  // presets:[
+  //   ['env', { 'modules': false }]
+  // ],
   plugins: {
     autoprefixer: {}
   }

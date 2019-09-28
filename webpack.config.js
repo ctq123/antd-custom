@@ -138,7 +138,7 @@ module.exports = (env, argv) => {
     optimization: {
       splitChunks: {
         chunks: 'all',
-        minSize: 30000, // 大于30K才会抽离到公共模块
+        minSize: 10000, // 大于10K才会抽离到公共模块
         minChunks: Infinity,
         name: 'vendor'
       }

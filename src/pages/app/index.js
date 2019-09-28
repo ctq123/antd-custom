@@ -28,6 +28,24 @@ class AppPage extends PureComponent {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.loginStatus !== prevState.loginStatus) {
+      console.log("nextProps.loginStatus", nextProps.loginStatus)
+      console.log("prevState.loginStatus", prevState.loginStatus)
+      return {
+        loginStatus: nextProps.loginStatus,
+      }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("this.state.loginStatus", this.state.loginStatus)
+    if (!this.state.loginStatus) {
+      this.props.history.push('/login')
+    }
+  }
+
   // 根据index.menu.js配置生成路由
   generateRoute = () => {
     // 读取所有index.menu.js文件
@@ -115,9 +133,8 @@ class AppPage extends PureComponent {
 }
 
 const mapStateToProp = (state) => {
-  // 对应app.model.js中的name
-  const { app } = state
-  return app
+  const { login } = state
+  return login
 }
 
 const mapDispatchToProp = (dispatch) => {

@@ -12,7 +12,6 @@ const App = (
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path='/login' component={LoginPage} />
-          {/* 重写route处理登陆认证 */}
           <Route path='/app' component={AppPage} />
           <Redirect to='/login' />
         </Switch>

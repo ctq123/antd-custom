@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Form, Input, Button } from 'antd'
+import { connect } from 'react-redux'
 import './styles.css'
 
 const FormItem = Form.Item
@@ -7,18 +8,38 @@ class LoginForm extends PureComponent {
   constructor(props) {
     super(props)
     console.log("props",props)
+    this.state = {
+      loginStatus: props.loginStatus
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.loginStatus !== prevState.loginStatus) {
+      return {
+        loginStatus: nextProps.loginStatus,
+      }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.loginStatus) {
+      this.props.history.push('/app')
+    }
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { form, history } = this.props
+    const { form, dispatch } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        const { username, password } = values
-        if (username === 'guest' && password === 'guest') {
-          history.push('/app')
-        }
+        dispatch({
+          type: 'login',
+          payload: {
+            ...values
+          },
+        })
       }
     });
   }
@@ -45,7 +66,7 @@ class LoginForm extends PureComponent {
             )}
           </FormItem>
           <FormItem>
-            <Button type='primary' htmlType='submit'>确定</Button>
+            <Button type='primary' htmlType='submit' loading={this.props.loading}>确定</Button>
             <p>
               <span>Username：guest</span>
               <span className='span-right'>Password：guest</span>
@@ -59,4 +80,14 @@ class LoginForm extends PureComponent {
 
 const Login = Form.create()(LoginForm)
 
-export default Login
+const mapStateToProp = state => {
+  // 对应index.model.js中的name
+  const { login } = state
+  return login
+}
+
+const mapDispatchToProp = (dispatch) => {
+  return { dispatch }
+}
+
+export default connect(mapStateToProp, mapDispatchToProp)(Login)

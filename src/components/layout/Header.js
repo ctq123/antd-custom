@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Layout, Menu, Icon, Avatar } from 'antd'
 import styles from './Header.less'
+import { connect } from 'react-redux'
 
 const { SubMenu } = Menu
 
@@ -11,7 +12,9 @@ class Header extends PureComponent {
 
   handleClickMenu = e => {
     if (e.key === 'SignOut') {
-      this.props.history.push('/login')
+      this.props.dispatch({
+        type: 'login/logout',
+      })
     }
   }
 
@@ -53,4 +56,9 @@ class Header extends PureComponent {
     )
   }
 }
-export default Header
+
+const mapDispatchToProp = (dispatch) => {
+  return { dispatch }
+}
+
+export default connect(null, mapDispatchToProp)(Header)
