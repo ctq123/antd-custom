@@ -1,42 +1,57 @@
-import React, { PureComponent, Fragment } from 'react'
-import { Layout, Menu, Icon, Avatar } from 'antd'
+import React, { PureComponent } from 'react'
+import { Layout, Menu, Icon } from 'antd'
+import menus from '../../menus'
 import styles from './Sider.less'
 
 const { SubMenu } = Menu
 const MenuItem = Menu.Item
 
-const menus = [
-  { id: 1, name: '首页', icon: 'home', children: [] },
-  { id: 2, name: '系统配置', icon: 'laptop', children: [
-    { id: 21, name: '接口配置', children: [] },
-    { id: 22, name: '常量配置', children: [] },
-  ] },
-  { id: 3, name: '用户管理', icon: 'user', children: [
-    { id: 31, name: '用户管理', children: [] },
-    { id: 32, name: '角色管理', children: [] },
-  ] },
-]
 class Sider extends PureComponent {
+  
+  constructor(props) {
+    super(props)
+    const { pathname } = (props.history && props.history.location) || {}
+    this.historyListener(props.history)
+    this.state = {
+      selectedKey: pathname,
+      defaultOpenKeys: this.getDefaultOpenKeys(pathname),
+    }
+  }
+
+  componentWillUnmount() {
+    this.unlisten && this.unlisten()
+  }
+
+  historyListener = (history) => {
+    // 处理输入url地址，触发菜单栏活动页
+    this.unlisten = history && history.listen(location => {
+      const { pathname } = location || {}
+      if (pathname) {
+        this.setState({
+          selectedKey: pathname
+        })
+      }
+    })
+  }
+
+  getDefaultOpenKeys = (pathname) => {
+    const paths = (pathname || '').split('/')
+    let res = []
+
+    if (paths && paths.length > 3) {
+      for(let i = 3; i <= paths.length; i++) {
+        let p = paths.slice(0, 3).join('/')
+        res.push(p)
+      }
+    }
+    return res
+  }
 
   onClick = (item) => {
     console.log("item", item)
-    let list = menus
-    const { keyPath } = item || {}
-    const getItem = (list, prop, val) => {
-      for(let obj of list) {
-        if (obj[prop] === val) {
-          return obj
-        }
-      }
-    }
-    
-    keyPath && keyPath.reverse()
-    for(let k of keyPath) {
-      let obj = getItem(list, 'id', Number(k))
-      if (obj) {
-        console.log(obj.name)
-        list = obj.children
-      }
+    const { history } = this.props
+    if (history && item.key) {
+      history.push(item.key)
     }
   }
 
@@ -45,7 +60,7 @@ class Sider extends PureComponent {
       if (item.children && item.children.length) {
         return (
           <SubMenu
-          key={item.id}
+          key={item.path}
           title={
             <span>
               { item.icon && <Icon type={item.icon} /> }
@@ -58,13 +73,14 @@ class Sider extends PureComponent {
         )
       }
       return (
-        <MenuItem key={item.id}>{item.name}</MenuItem>
+        <MenuItem key={item.path}>{item.name}</MenuItem>
       )
     })
   }
 
   render() {
     const { collapsed } = this.props
+    const { selectedKey, defaultOpenKeys } = this.state
     
     return (
       <Layout.Sider className={styles.sider} trigger={null} collapsible collapsed={collapsed}>
@@ -72,7 +88,8 @@ class Sider extends PureComponent {
         <Menu theme="dark" 
           mode="inline" 
           onClick={this.onClick}
-          defaultSelectedKeys={['1']}
+          selectedKeys={[selectedKey]}
+          defaultOpenKeys={defaultOpenKeys}
           >
           {this.generateMenuItem(menus)}
         </Menu>
@@ -80,4 +97,5 @@ class Sider extends PureComponent {
     )
   }
 }
+
 export default Sider

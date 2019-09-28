@@ -1,20 +1,22 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import LoginLayout from './layouts/LoginLayout'
-import AuthRoute from './layouts/AuthRoute'
-import AppLayout from './layouts/AppLayout'
 import { Provider } from 'react-redux'
 import store from './redux/store'
+
+const LoginPage = lazy(() => import('./pages/login'))
+const AppPage = lazy(() => import('./pages/app'))
 
 const App = (
   <Provider store={store}>
     <HashRouter>
-      <Switch>
-        <Route path='/login' component={LoginLayout} />
-        {/* 重写route处理登陆认证 */}
-        <AuthRoute path='/app' component={AppLayout} />
-        <Redirect to='/login' />
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path='/login' component={LoginPage} />
+          {/* 重写route处理登陆认证 */}
+          <Route path='/app' component={AppPage} />
+          <Redirect to='/login' />
+        </Switch>
+      </Suspense>
     </HashRouter>
   </Provider>
 )
