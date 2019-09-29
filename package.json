@@ -63,6 +63,7 @@
     "less": "3.8.1",
     "less-loader": "4.1.0",
     "mini-css-extract-plugin": "0.4.5",
+    "moment": "^2.24.0",
     "postcss-loader": "3.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "react-redux": "^7.1.1",
