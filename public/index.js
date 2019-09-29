@@ -1,5 +1,5 @@
 import { render } from 'react-dom'
-import App from '../src/app'
+import App from '../src/App'
 import * as serviceWorker from '../src/serviceWorker'
 import './index.css'
 
