@@ -5,7 +5,7 @@ const menu = {
   menuName: '系统配置',
   routeProps: {
     path: '/app/system',
-    component: React.lazy(() => import('./index')),
+    component: React.lazy(() => import(/* webpackChunkName: 'system' */'./index')),
   },
 }
 

@@ -6,7 +6,7 @@ const menu = {
   routeProps: {
     exact: true,
     path: '/app',
-    component: React.lazy(() => import('./index')),
+    component: React.lazy(() => import(/* webpackChunkName: 'home' */'./index')),
   },
 }
 

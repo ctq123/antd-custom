@@ -5,7 +5,7 @@ const menu = {
   menuName: '用户管理',
   routeProps: {
     path: '/app/users/userManage',
-    component: React.lazy(() => import('./index')),
+    component: React.lazy(() => import(/* webpackChunkName: 'usermanage' */'./index')),
   },
   redirectProps: {
     from: '/app/users',

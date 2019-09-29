@@ -27,6 +27,12 @@ class AppPage extends PureComponent {
       redirects,
     }
   }
+  
+  componentDidMount() {
+    if (!this.state.loginStatus) {
+      this.goToPage('/login')
+    }
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.loginStatus !== prevState.loginStatus) {
@@ -42,14 +48,14 @@ class AppPage extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     console.log("this.state.loginStatus", this.state.loginStatus)
     if (!this.state.loginStatus) {
-      this.props.history.push('/login')
+      this.goToPage('/login')
     }
   }
 
   // 根据index.menu.js配置生成路由
   generateRoute = () => {
     // 读取所有index.menu.js文件
-    const tabs = require.context('../tabs', true, /index\.menu\.js/)
+    const menus = require.context('../tabs', true, /index\.menu\.js/)
     // 已有的菜单路由
     const existMenu = {}
     // 已生成有效的路由(菜单有，路由不一定有效，如包含二级菜单的一级菜单)
@@ -58,9 +64,8 @@ class AppPage extends PureComponent {
     const redirectsTemp = []
   
     // 生成路由routes
-    const routes = tabs.keys().map(path => {
-      path = path.replace(/^(\.\/)/g, '')
-      const menu = require('../tabs/' + path).default
+    const routes = menus.keys().map(path => {
+      const menu = menus(path).default
       const { menuKey, menuName, routeProps, redirectProps } = menu || {}
       if (menuKey && routeProps && routeProps.path) {
         if (!existMenu[menuKey]) {
@@ -97,6 +102,11 @@ class AppPage extends PureComponent {
       }
     })
     return { routes, existRoute, redirects }
+  }
+
+  goToPage = (path) => {
+    const { history } = this.props
+    history && path && history.push(path)
   }
 
   toggle = () => {

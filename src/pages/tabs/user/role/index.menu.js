@@ -5,7 +5,7 @@ const menu = {
   menuName: '角色管理',
   routeProps: {
     path: '/app/users/roleManage',
-    component: React.lazy(() => import('./index')),
+    component: React.lazy(() => import(/* webpackChunkName: 'rolemanage' */'./index')),
   },
 }
 

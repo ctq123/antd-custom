@@ -70,8 +70,16 @@ module.exports = (env, argv) => {
         use: {
           loader: 'babel-loader',
           options: {
-            'presets': ['env', 'react', 'stage-0'],
-            'plugins': ['transform-runtime', ['import', { 'libraryName': 'antd', 'style': true }]]
+            'presets': [
+              ['env', { 'modules': false }], 
+              'react', 
+              'stage-0'
+            ],
+            'plugins': [
+              'transform-runtime', 
+              'syntax-dynamic-import', // 动态引入import
+              ['import', { 'libraryName': 'antd', 'style': true }] // 引入antd样式
+          ]
           }
         }
       }, {
@@ -138,7 +146,7 @@ module.exports = (env, argv) => {
     optimization: {
       splitChunks: {
         chunks: 'all',
-        minSize: 10000, // 大于10K才会抽离到公共模块
+        minSize: 30000, // 大于30K才会抽离到公共模块
         minChunks: Infinity,
         name: 'vendor'
       }

@@ -24,8 +24,13 @@ class LoginForm extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.loginStatus) {
-      this.props.history.push('/app')
+      this.goToPage('/app')
     }
+  }
+
+  goToPage = (path) => {
+    const { history } = this.props
+    history && path && history.push(path)
   }
 
   handleSubmit = e => {
