@@ -9,6 +9,9 @@
   align-items: center;
   background-color: #fff;
 
+  .rightcon {
+    display: flex;
+  }
   .trigger {
     font-size: 18px;
     line-height: 64px;
@@ -41,6 +44,9 @@
 
     .ant-menu-horizontal {
       line-height: 72px;
+      & > .ant-menu-submenu:hover {
+        background-color: rgb(230, 230, 230);
+      }
     }
 
     .ant-menu {

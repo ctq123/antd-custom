@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import menus from '../../menus'
 import styles from './Sider.less'
+import { injectIntl } from 'react-intl'
+
+import { translateText } from '../../utils/translate'
 
 const { SubMenu } = Menu
 const MenuItem = Menu.Item
@@ -50,7 +53,7 @@ class Sider extends PureComponent {
   }
 
   onClick = (item) => {
-    console.log("item", item)
+    // console.log("item", item)
     const { history } = this.props
     if (history && item.key) {
       history.push(item.key)
@@ -66,7 +69,7 @@ class Sider extends PureComponent {
           title={
             <span>
               { item.icon && <Icon type={item.icon} /> }
-              <span>{item.name}</span>
+              <span>{translateText({ id: item.path })}</span>
             </span>
           }
         >
@@ -75,7 +78,7 @@ class Sider extends PureComponent {
         )
       }
       return (
-        <MenuItem key={item.path}>{item.name}</MenuItem>
+        <MenuItem key={item.path}>{translateText({ id: item.path })}</MenuItem>
       )
     })
   }
@@ -100,4 +103,4 @@ class Sider extends PureComponent {
   }
 }
 
-export default Sider
+export default injectIntl(Sider)

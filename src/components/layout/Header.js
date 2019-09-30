@@ -2,6 +2,9 @@ import React, { PureComponent, Fragment } from 'react'
 import { Layout, Menu, Icon, Avatar } from 'antd'
 import styles from './Header.less'
 import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
+
+import { translateText } from '../../utils/translate'
 
 const { SubMenu } = Menu
 
@@ -10,12 +13,22 @@ class Header extends PureComponent {
     super(props)
   }
 
-  handleClickMenu = e => {
+  handleClickSignout = e => {
     if (e.key === 'SignOut') {
       this.props.dispatch({
         type: 'login/logout',
       })
     }
+  }
+
+  handleClickLanguage = e => {
+    const language = e.key
+    this.props.dispatch({
+      type: 'app/language',
+      payload: {
+        language
+      }
+    })
   }
 
   toggle = e => {
@@ -25,7 +38,8 @@ class Header extends PureComponent {
   }
 
   render() {
-    const { collapsed } = this.props
+    const { collapsed, language, languages } = this.props
+    const currentLanguage = languages.find(item => item.key === language)
     return (
       <Layout.Header className={styles.header}>
         <Icon
@@ -33,13 +47,33 @@ class Header extends PureComponent {
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
-        <div>
-          <Menu key="user" mode="horizontal" onClick={this.handleClickMenu}>
+        <div className={styles.rightcon}>
+          {/* 语言菜单 */}
+          <Menu
+            selectedKeys={[currentLanguage.key]}
+            onClick={this.handleClickLanguage}
+            mode="horizontal"
+          >
+            <SubMenu title={<Avatar size="small" src={currentLanguage.flag} />}>
+              {languages.map(item => (
+                <Menu.Item key={item.key}>
+                  <Avatar
+                    size="small"
+                    style={{ marginRight: 8 }}
+                    src={item.flag}
+                  />
+                  {item.title}
+                </Menu.Item>
+              ))}
+            </SubMenu>
+          </Menu>
+          {/* 登陆用户问候语 */}
+          <Menu key="user" mode="horizontal" onClick={this.handleClickSignout}>
             <SubMenu
               title={
                 <Fragment>
                   <span style={{ color: '#999', marginRight: 4 }}>
-                    Hi,
+                    {translateText({ id: 'Hi,' })}
                   </span>
                   <span>{'guest'}</span>
                   <Avatar style={{ marginLeft: 8 }} src={'../../../assets/img/avatar.jpeg'} />
@@ -47,7 +81,7 @@ class Header extends PureComponent {
               }
             >
               <Menu.Item key="SignOut">
-                Sign out
+                {translateText({ id: 'Sign out' })}
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -57,8 +91,13 @@ class Header extends PureComponent {
   }
 }
 
+const mapStateToProp = (state) => {
+  const { app } = state
+  return app
+}
+
 const mapDispatchToProp = (dispatch) => {
   return { dispatch }
 }
 
-export default connect(null, mapDispatchToProp)(Header)
+export default connect(mapStateToProp, mapDispatchToProp)(injectIntl(Header))

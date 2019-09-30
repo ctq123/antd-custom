@@ -8,6 +8,8 @@ const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const GetRepoInfo = require('git-repo-info')
 const moment = require('moment')
+const HappyPack = require('happypack')
+const os = require('os')
 
 const htmlPlugin = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'public/index.html'),
@@ -47,13 +49,39 @@ const definePlugin = new webpack.DefinePlugin({
 //   parallel: true,
 //   sourceMap: true
 // })
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+const happyPack = new HappyPack({
+  id: 'babel',
+  loaders: [{
+    loader: 'babel-loader',
+    options: {
+      cacheDirectory: true,
+      presets: ['@babel/preset-env', '@babel/preset-react'],
+      plugins: [
+        ['@babel/plugin-proposal-decorators', { "legacy": true }],
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-proposal-export-default-from',
+        '@babel/plugin-transform-runtime',
+        ['import',{
+          libraryName:'antd',
+          libraryDirectory: 'es',
+          style:true
+        }]
+      ]
+    }
+  }],
+  //共享进程池
+  threadPool: happyThreadPool,
+  //允许 HappyPack 输出日志
+  verbose: true,
+})
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production'
   return {
     entry: {
       main: [
-        'babel-polyfill',
+        '@babel/polyfill',
         path.join(__dirname, './public/index.js')
       ],
       vendor: ['react', 'react-dom']
@@ -67,21 +95,7 @@ module.exports = (env, argv) => {
       rules: [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            'presets': [
-              ['env', { 'modules': false }], 
-              'react', 
-              'stage-0'
-            ],
-            'plugins': [
-              'transform-runtime', 
-              'syntax-dynamic-import', // 动态引入import
-              ['import', { 'libraryName': 'antd', 'style': true }] // 引入antd样式
-          ]
-          }
-        }
+        loaders: ['happypack/loader?id=babel'],
       }, {
         test: /\.(css|less)$/,
         include: /src|public/,
@@ -141,7 +155,8 @@ module.exports = (env, argv) => {
       cleanPlugin,
       copyPlugin,
       progressPlugin,
-      definePlugin
+      definePlugin,
+      happyPack
     ],
     optimization: {
       splitChunks: {

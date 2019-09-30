@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'antd'
+import { Button, Pagination } from 'antd'
 import { connect } from 'react-redux'
 
 const Home = (props) => {
@@ -25,6 +25,9 @@ const Home = (props) => {
       <Button type='primary' onClick={onIncrement}>+10</Button>
       <Button type='primary' onClick={onIncrementAsync} loading={props.loading}>+20</Button>
       <h4>count: { props.count }</h4>
+      <aside>
+        <Pagination defaultCurrent={1} total={50} showSizeChanger />
+      </aside>
     </aside>
   )
 }
