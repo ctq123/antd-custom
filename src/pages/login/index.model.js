@@ -6,7 +6,7 @@ const model = {
   // 初始state状态
   state: {
     loading: false,
-    loginStatus: localStorage.getItem('username'),
+    loginStatus: sessionStorage.getItem('username'),
   },
   // reducer
   reducers: {
@@ -16,7 +16,7 @@ const model = {
     'login/sucess': (state, action) => {
       const { username } = action.payload || {}
       if (username) {
-        localStorage.setItem('username', username)
+        sessionStorage.setItem('username', username)
       }
       return { 
         ...state, 
@@ -28,7 +28,7 @@ const model = {
       return { ...state, loginStatus: '', loading: false }
     },
     'login/logout': (state) => {
-      localStorage.setItem('username', '')
+      sessionStorage.removeItem('username')
       return { ...state, loginStatus: '' }
     },
   },
@@ -40,7 +40,7 @@ const model = {
         console.log("resp", resp)
         yield put({ type: 'login/sucess', payload: resp })
       } else {
-        throw resp
+        yield put({ type: 'login/fail' })
       }
     },
   },

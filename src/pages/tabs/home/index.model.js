@@ -21,6 +21,9 @@ const model = {
       const { payload } = action
       return { ...state, loading: false, count: state.count + payload }
     },
+    'home/increment/async/fail': function(state, action) {
+      return { ...state, loading: false }
+    },
   },
   // saga
   effects: {
@@ -28,9 +31,14 @@ const model = {
       const resp = yield call(increment, payload)
       if (resp) {
         console.log("resp", resp)
-        yield put({ type: 'home/increment/async/success', payload: resp.data })
+        const { model, success } = (resp && resp.data) || {}
+        if (success) {
+          yield put({ type: 'home/increment/async/success', payload: model })
+        } else {
+          yield put({ type: 'home/increment/async/fail' })
+        }
       } else {
-        throw resp
+        yield put({ type: 'home/increment/async/fail' })
       }
     },
   },

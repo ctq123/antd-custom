@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
-import { getMenusMap } from '../../menus/index'
+import { getMenusMap } from '@menus/index'
 import { injectIntl } from 'react-intl'
-import { translateText } from '../../utils/translate'
+import { translateText } from '@utils/translate'
 
 const menusPathMap = getMenusMap('path')
 

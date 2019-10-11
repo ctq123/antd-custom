@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import { Layout, Menu, Icon } from 'antd'
-import menus from '../../menus'
+import menus from '@menus/index'
 import styles from './Sider.less'
 import { injectIntl } from 'react-intl'
 
-import { translateText } from '../../utils/translate'
+import { translateText } from '@utils/translate'
 
 const { SubMenu } = Menu
 const MenuItem = Menu.Item
@@ -30,7 +30,7 @@ class Sider extends PureComponent {
     // 处理输入url地址，触发菜单栏活动页
     this.unlisten = history && history.listen(location => {
       const { pathname } = location || {}
-      console.log("Breadcrumbs location", location)
+      // console.log("Breadcrumbs location", location)
       if (pathname && existRoute[pathname]) {
         this.setState({
           selectedKey: pathname
@@ -78,7 +78,10 @@ class Sider extends PureComponent {
         )
       }
       return (
-        <MenuItem key={item.path}>{translateText({ id: item.path })}</MenuItem>
+        <MenuItem key={item.path}>
+          { item.icon && <Icon type={item.icon} /> }
+          {translateText({ id: item.path })}
+        </MenuItem>
       )
     })
   }

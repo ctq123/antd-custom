@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button, Pagination } from 'antd'
+import { Button } from 'antd'
 import { connect } from 'react-redux'
+import { translateText } from '@utils/translate'
 
 const Home = (props) => {
 
@@ -22,12 +23,9 @@ const Home = (props) => {
 
   return (
     <aside>
-      <Button type='primary' onClick={onIncrement}>+10</Button>
-      <Button type='primary' onClick={onIncrementAsync} loading={props.loading}>+20</Button>
+      <Button type='primary' onClick={onIncrement}>{ translateText({ id: 'sync +10' }) }</Button>
+      <Button type='primary' onClick={onIncrementAsync} loading={props.loading}>{ translateText({ id: 'async +20' }) }</Button>
       <h4>count: { props.count }</h4>
-      <aside>
-        <Pagination defaultCurrent={1} total={50} showSizeChanger />
-      </aside>
     </aside>
   )
 }

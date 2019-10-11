@@ -11,8 +11,8 @@ import '@formatjs/intl-relativetimeformat/dist/locale-data/en'
 import '@formatjs/intl-relativetimeformat/dist/locale-data/zh'
 
 // 业务自定义语言
-import en_US from '../../locales/en_US'
-import zh_CN from '../../locales/zh_CN'
+import en_US from '@locales/en_US'
+import zh_CN from '@locales/zh_CN'
 
 // antd中的时间控件
 import moment from 'moment'
@@ -35,7 +35,7 @@ const messages = {
 class ReactIntlProvider extends PureComponent {
 
   render() {
-    console.log("ReactIntlProvider")
+    // console.log("ReactIntlProvider")
     const { language } = this.props
     const lang = language ? language.split('-')[0] : 'zh'
     moment.locale(lang)

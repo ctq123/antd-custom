@@ -10,6 +10,7 @@ const GetRepoInfo = require('git-repo-info')
 const moment = require('moment')
 const HappyPack = require('happypack')
 const os = require('os')
+const mock = require('cf-mock-server/express-mw')
 
 const htmlPlugin = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'public/index.html'),
@@ -35,11 +36,12 @@ const publishEnv = process.env.npm_lifecycle_event.replace('build:', '')
 const { branch } = GetRepoInfo()
 const RELEASE = `${publishEnv}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
 
-const serverHost = 'http://localhost:8080'
-const apiPrex = ''
+// const serverHost = 'http://localhost:8080'
+// const apiPrex = ''
 
 const definePlugin = new webpack.DefinePlugin({
-  HOST: publishEnv === 'dev' ? JSON.stringify(serverHost) : JSON.stringify(apiPrex),
+  // HOST: publishEnv === 'dev' ? JSON.stringify(serverHost) : JSON.stringify(apiPrex),
+  NODE_ENV: JSON.stringify(publishEnv),
   RELEASE: JSON.stringify(RELEASE)
 })
 
@@ -167,6 +169,14 @@ module.exports = (env, argv) => {
       }
     },
     resolve: {
+      alias: {
+        '@assets': path.join(__dirname, 'assets'),
+        '@src': path.join(__dirname, 'src'),
+        '@components': path.join(__dirname, 'src/components'),
+        '@utils': path.join(__dirname, 'src/utils'),
+        '@menus': path.join(__dirname, 'src/menus'),
+        '@locales': path.join(__dirname, 'src/locales'),
+      },
       extensions: ['.js', '.jsx', '.html', '.css', '.less']
     },
     performance: {
@@ -190,7 +200,13 @@ module.exports = (env, argv) => {
         errors: true,
         errorDetails: true,
         warnings: true
-      }
+      },
+      // https://webpack.js.org/configuration/dev-server/#devserverbefore
+      after: (app, server) => {
+        app.use(mock({
+          config: path.join(__dirname, './mock-server/config.js')
+        }))
+      },
     }
   }
 }

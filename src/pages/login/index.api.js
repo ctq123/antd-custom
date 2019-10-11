@@ -1,4 +1,4 @@
-import { rejects } from "assert";
+import { devSetCookieToken } from '@utils/handleCookie'
 
 export async function login(payload) {
   // fetch, axios向后端发起请求，这里用setTimeout模拟异步
@@ -7,6 +7,9 @@ export async function login(payload) {
       console.log('payload', payload)
       const { username, password } = payload
       if (username === 'guest' && password === 'guest') {
+        // 设置本地环境token
+        devSetCookieToken()
+
         const data = { ...payload, success: true }
         setTimeout(() => {
           resolve(data)

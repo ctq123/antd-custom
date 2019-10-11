@@ -4,7 +4,7 @@ import styles from './Header.less'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 
-import { translateText } from '../../utils/translate'
+import { translateText } from '@utils/translate'
 
 const { SubMenu } = Menu
 

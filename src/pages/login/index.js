@@ -7,7 +7,7 @@ const FormItem = Form.Item
 class LoginForm extends PureComponent {
   constructor(props) {
     super(props)
-    console.log("props",props)
+    // console.log("props",props)
     this.state = {
       loginStatus: props.loginStatus
     }
@@ -38,7 +38,7 @@ class LoginForm extends PureComponent {
     const { form, dispatch } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
         dispatch({
           type: 'login',
           payload: {

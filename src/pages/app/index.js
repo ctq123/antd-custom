@@ -2,12 +2,14 @@ import React, { PureComponent, Fragment, lazy, Suspense } from 'react'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { Layout, Button } from 'antd'
 import { connect } from 'react-redux'
-import Header from '../../components/layout/Header'
-import Sider from '../../components/layout/Sider'
-import Footer from '../../components/layout/Footer'
-import Breadcrumb from '../../components/breadcrumb/Breadcrumb'
+import Header from '@components/layout/Header'
+import Sider from '@components/layout/Sider'
+import Footer from '@components/layout/Footer'
+import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import styles from './index.less'
-import { getMenusMap } from '../../menus'
+import { getMenusMap } from '@menus/index'
+import { getCookie } from '@utils/handleCookie'
+import { setAxiosToken } from '@utils/handleAxios'
 
 const { Content } = Layout
 
@@ -32,12 +34,19 @@ class AppPage extends PureComponent {
     if (!this.state.loginStatus) {
       this.goToPage('/login')
     }
+    const token = getCookie('token')
+    if (token) {
+      setAxiosToken(token)
+    } else {
+      // this.goToPage('/login')
+      this.props.dispatch({
+        type: 'login/logout',
+      })
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.loginStatus !== prevState.loginStatus) {
-      console.log("nextProps.loginStatus", nextProps.loginStatus)
-      console.log("prevState.loginStatus", prevState.loginStatus)
       return {
         loginStatus: nextProps.loginStatus,
       }
@@ -46,7 +55,6 @@ class AppPage extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("this.state.loginStatus", this.state.loginStatus)
     if (!this.state.loginStatus) {
       this.goToPage('/login')
     }

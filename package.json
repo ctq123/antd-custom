@@ -69,6 +69,7 @@
     "babel-jest": "23.6.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "1.9.1",
+    "cf-mock-server": "^1.0.14",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "1.0.0",
