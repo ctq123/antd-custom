@@ -28,7 +28,7 @@ class Sider extends PureComponent {
     this.unlisten = history && history.listen(location => {
       const { pathname } = location || {}
       const { existRoute } = this.props
-      console.log("Sider location", location)
+      // console.log("Sider location", location)
       if (pathname && existRoute[pathname]) {
         this.setState({
           selectedKey: pathname

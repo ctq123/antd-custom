@@ -1,8 +1,11 @@
 import React from "react"
 import { Route, Redirect } from 'react-router-dom'
 
-// 根据index.menu.js配置生成路由
-export const generateRoute = (menusKeyMap) => {
+/**
+ * 根据index.menu.js配置生成路由
+ * @param {menus菜单'key'类型的map} menusKeyMap 
+ */
+export function generateRoute (menusKeyMap) {
   // 读取所有index.menu.js文件
   const menus = require.context('../pages/tabs', true, /index\.menu\.js/)
   // 已有的菜单路由
@@ -53,7 +56,11 @@ export const generateRoute = (menusKeyMap) => {
   return { routes, existRoute, redirects }
 }
 
-// 自定义key，生成菜单map类型
+/**
+ * 自定义key，生成菜单map类型
+ * @param {menus唯一属性值，如'key','path'} key 
+ * @param {menus数据} menuList 
+ */
 export function getMenusMap(key = 'key', menuList=[]) {
   const menusMap = {}
   const generateMap = (list) => {
