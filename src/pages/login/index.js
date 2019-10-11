@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { connect } from 'react-redux'
 import './styles.css'
 
@@ -26,6 +26,13 @@ class LoginForm extends PureComponent {
     if (this.state.loginStatus) {
       this.goToPage('/app')
     }
+    if (this.props.errMsg) {
+      message.error(this.props.errMsg)
+      this.props.dispatch({
+        type: 'login/resetData',
+        payload: { errMsg: '' }
+      })
+    }
   }
 
   goToPage = (path) => {
@@ -51,6 +58,7 @@ class LoginForm extends PureComponent {
   
   render () {
     const { getFieldDecorator } = this.props.form;
+    const { loading } = this.props
     return (
       <div className='login'>
         <Form className='login-form' onSubmit={this.handleSubmit}>
@@ -71,7 +79,7 @@ class LoginForm extends PureComponent {
             )}
           </FormItem>
           <FormItem>
-            <Button type='primary' htmlType='submit' loading={this.props.loading}>确定</Button>
+            <Button type='primary' htmlType='submit' loading={loading}>确定</Button>
             <p>
               <span>Username：guest</span>
               <span className='span-right'>Password：guest</span>

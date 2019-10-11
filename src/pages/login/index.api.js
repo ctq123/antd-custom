@@ -1,26 +1,15 @@
-import { devSetCookieToken } from '@utils/handleCookie'
+import axios from 'axios'
 
 export async function login(payload) {
-  // fetch, axios向后端发起请求，这里用setTimeout模拟异步
-  return new Promise((resolve, rejects) => {
-    if (payload) {
-      console.log('payload', payload)
-      const { username, password } = payload
-      if (username === 'guest' && password === 'guest') {
-        // 设置本地环境token
-        devSetCookieToken()
-
-        const data = { ...payload, success: true }
-        setTimeout(() => {
-          resolve(data)
-        }, 1000)
-      } else {
-        setTimeout(() => {
-          rejects(null)
-        }, 1000)
-      } 
-    } else {
-      rejects(null)
-    }
+  // 模拟后端验证登陆名和密码，正式环境应该去掉
+  if (payload.username != 'guest' || payload.password != 'guest') {
+    return null
+  }
+  return axios.post('/api/login', {
+    ...payload
+  }).then(resp => {
+    return Promise.resolve(resp)
+  }).catch(e => {
+    return null
   })
 }
