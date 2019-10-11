@@ -7,20 +7,3 @@ export const menus = [
     { key: '32', name: '角色管理', path: '/app/users/roleManage', children: [] },
   ]},
 ]
-
-export function getMenusMap(key = 'key') {
-  const menusMap = {}
-  const generateMap = (list) => {
-    list.map(item => {
-      const { children } = item || {}
-      if (children && children.length) {
-        generateMap(children)
-      }
-      menusMap[item[key]] = item
-    })
-  }
-  generateMap(menus)
-  return menusMap
-}
-
-export default menus

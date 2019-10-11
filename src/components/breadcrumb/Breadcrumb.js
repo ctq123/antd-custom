@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
-import { getMenusMap } from '@menus/index'
+import { getMenusMap } from '@menus/menu.route'
 import { injectIntl } from 'react-intl'
 import { translateText } from '@utils/translate'
 
-const menusPathMap = getMenusMap('path')
 
 const BreadcrumbItem = Breadcrumb.Item 
 class Breadcrumbs extends PureComponent {
@@ -13,6 +12,7 @@ class Breadcrumbs extends PureComponent {
     super(props)
     const { pathname } = (props.history && props.history.location) || {}
     this.historyListener(props.history)
+    this.menusPathMap = getMenusMap('path', props.menuList)
     this.state = {
       items: this.getItems(pathname),
     }
@@ -43,8 +43,8 @@ class Breadcrumbs extends PureComponent {
     if (paths && paths.length > 2) {
       for(let i = 2; i <= paths.length; i++) {
         let p = paths.slice(0, i).join('/')
-        if (menusPathMap[p]) {
-          const { path, name } = menusPathMap[p]
+        if (this.menusPathMap[p]) {
+          const { path, name } = this.menusPathMap[p]
           keys.push(path)
         }
       }

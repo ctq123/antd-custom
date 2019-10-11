@@ -1,3 +1,4 @@
+import { menus } from '@menus/menu.data'
 
 const model = {
   // model名称，view层用于提取state的key，需要保证唯一
@@ -17,6 +18,7 @@ const model = {
         flag: '../../../assets/img/china.svg',
       },
     ],
+    menuList: menus,
   },
   // reducer
   reducers: {

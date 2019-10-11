@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Layout, Menu, Icon } from 'antd'
-import menus from '@menus/index'
 import styles from './Sider.less'
 import { injectIntl } from 'react-intl'
-
 import { translateText } from '@utils/translate'
 
 const { SubMenu } = Menu
@@ -14,7 +12,7 @@ class Sider extends PureComponent {
   constructor(props) {
     super(props)
     const { pathname } = (props.history && props.history.location) || {}
-    this.historyListener(props)
+    this.historyListener(props.history)
     this.state = {
       selectedKey: pathname,
       defaultOpenKeys: this.getDefaultOpenKeys(pathname),
@@ -25,12 +23,12 @@ class Sider extends PureComponent {
     this.unlisten && this.unlisten()
   }
 
-  historyListener = (props) => {
-    const { existRoute, history } = props
+  historyListener = (history) => {
     // 处理输入url地址，触发菜单栏活动页
     this.unlisten = history && history.listen(location => {
       const { pathname } = location || {}
-      // console.log("Breadcrumbs location", location)
+      const { existRoute } = this.props
+      console.log("Sider location", location)
       if (pathname && existRoute[pathname]) {
         this.setState({
           selectedKey: pathname
@@ -87,7 +85,7 @@ class Sider extends PureComponent {
   }
 
   render() {
-    const { collapsed } = this.props
+    const { collapsed, menuList } = this.props
     const { selectedKey, defaultOpenKeys } = this.state
     
     return (
@@ -99,7 +97,7 @@ class Sider extends PureComponent {
           selectedKeys={[selectedKey]}
           defaultOpenKeys={defaultOpenKeys}
           >
-          {this.generateMenuItem(menus)}
+          {this.generateMenuItem(menuList)}
         </Menu>
       </Layout.Sider>
     )
