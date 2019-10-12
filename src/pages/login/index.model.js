@@ -50,6 +50,7 @@ const model = {
       if (resp && success) {
         console.log("resp", resp)
         yield put({ type: 'login/sucess', payload: model })
+        // 设置登陆用户
       } else {
         yield put({ type: 'login/fail', payload: { errMsg: '登陆失败！用户名或密码错误' } })
       }

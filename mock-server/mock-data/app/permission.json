@@ -1,0 +1,12 @@
+{
+  "errorMessages": [],
+  "model": [
+    "menu.home",
+    "menu.system",
+    "menu.users",
+    "menu.userManage",
+    "menu.roleManage"
+  ],
+  "success": true,
+  "firstErrorMessage": null
+}

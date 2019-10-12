@@ -19,35 +19,58 @@ const { Content } = Layout
 class AppPage extends PureComponent {
   constructor(props) {
     super(props)
-    const menusKeyMap = getMenusMap('key', props.menuList)
-    const { routes, existRoute, redirects } = generateRoute(menusKeyMap)
+    const { routes, existRoute, redirects } = generateRoute()
     this.state = {
       collapsed: false,
       routes,
       existRoute,
       redirects,
+      menuLen: 0,
     }
   }
   
   componentDidMount() {
+    const { dispatch } = this.props
+    const username = sessionStorage.getItem('username')
+    const token = getCookie('token')
     if (!this.state.loginStatus) {
       this.goToPage('/login')
     }
-    const token = getCookie('token')
     if (token) {
       setAxiosToken(token)
+      // 获取用户权限列表
+      dispatch({
+        type: 'app/get/permission',
+        payload: {
+          username
+        }
+      })
     } else {
       // this.goToPage('/login')
-      this.props.dispatch({
+      dispatch({
         type: 'login/logout',
       })
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    const { menuList } = nextProps
     if (nextProps.loginStatus !== prevState.loginStatus) {
       return {
         loginStatus: nextProps.loginStatus,
+      }
+    }
+    if (menuList) {
+      // 根据用户权限菜单重新生成菜单路由
+      if (menuList.length != prevState.menuLen) {
+        const menusKeyMap = getMenusMap('key', menuList)
+        const { routes, existRoute, redirects } = generateRoute(menusKeyMap)
+        return {
+          routes,
+          existRoute,
+          redirects,
+          menuLen: menuList.length
+        }
       }
     }
     return null
@@ -73,9 +96,16 @@ class AppPage extends PureComponent {
   render() {
     const { collapsed, routes, redirects, existRoute } = this.state
     const { history, match, menuList } = this.props
+    const siderProps = {
+      collapsed,
+      history,
+      existRoute,
+      menuList
+    }
+    
     return (
       <Layout className={styles.app}>
-        <Sider collapsed={collapsed} history={history} existRoute={existRoute} menuList={menuList} />
+        <Sider {...siderProps} />
         <Layout>
           <Header collapsed={collapsed} history={history} toggle={this.toggle} />
           <Content className={styles.content}>
@@ -101,7 +131,7 @@ const mapStateToProp = (state) => {
   const { login, app } = state
   return {
     ...login,
-    menuList: app.menuList
+    menuList: app.menuList,
   }
 }
 

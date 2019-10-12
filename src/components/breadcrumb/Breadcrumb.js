@@ -14,7 +14,20 @@ class Breadcrumbs extends PureComponent {
     this.historyListener(props.history)
     this.menusPathMap = getMenusMap('path', props.menuList)
     this.state = {
+      menuLen: 0,
       items: this.getItems(pathname),
+    }
+  }
+
+  componentDidUpdate() {
+    const { menuList, history } = this.props
+    if (menuList && menuList.length != this.state.menuLen) {
+      this.menusPathMap = getMenusMap('path', menuList)
+      const { pathname } = (history && history.location) || {}
+      this.setState({
+        menuLen: menuList.length,
+        items: this.getItems(pathname)
+      })
     }
   }
 
@@ -28,9 +41,8 @@ class Breadcrumbs extends PureComponent {
       const { pathname } = location || {}
       // console.log("Breadcrumbs location", location)
       if (pathname) {
-        let items = this.getItems(pathname)
         this.setState({
-          items
+          items: this.getItems(pathname)
         })
       }
     })

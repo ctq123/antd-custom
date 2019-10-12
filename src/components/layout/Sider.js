@@ -29,6 +29,7 @@ class Sider extends PureComponent {
       const { pathname } = location || {}
       const { existRoute } = this.props
       // console.log("Sider location", location)
+      // console.log("Sider existRoute", existRoute)
       if (pathname && existRoute[pathname]) {
         this.setState({
           selectedKey: pathname
@@ -60,27 +61,30 @@ class Sider extends PureComponent {
 
   generateMenuItem = (data) => {
     return data.map(item => {
-      if (item.children && item.children.length) {
+      if (item) {
+        const { children, path, icon } = item
+        if (children && children.length) {
+          return (
+            <SubMenu
+            key={path}
+            title={
+              <span>
+                { icon && <Icon type={icon} /> }
+                <span>{translateText({ id: path })}</span>
+              </span>
+            }
+          >
+            {this.generateMenuItem(children)}
+          </SubMenu>
+          )
+        }
         return (
-          <SubMenu
-          key={item.path}
-          title={
-            <span>
-              { item.icon && <Icon type={item.icon} /> }
-              <span>{translateText({ id: item.path })}</span>
-            </span>
-          }
-        >
-          {this.generateMenuItem(item.children)}
-        </SubMenu>
+          <MenuItem key={path}>
+            { icon && <Icon type={icon} /> }
+            {translateText({ id: path })}
+          </MenuItem>
         )
       }
-      return (
-        <MenuItem key={item.path}>
-          { item.icon && <Icon type={item.icon} /> }
-          {translateText({ id: item.path })}
-        </MenuItem>
-      )
     })
   }
 

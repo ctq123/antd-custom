@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom'
  * 根据index.menu.js配置生成路由
  * @param {menus菜单'key'类型的map} menusKeyMap 
  */
-export function generateRoute (menusKeyMap) {
+export function generateRoute (menusKeyMap=null) {
   // 读取所有index.menu.js文件
   const menus = require.context('../pages/tabs', true, /index\.menu\.js/)
   // 已有的菜单路由
@@ -21,15 +21,17 @@ export function generateRoute (menusKeyMap) {
     const { menuKey, menuName, routeProps, redirectProps } = menu || {}
     if (menuKey && routeProps && routeProps.path) {
       if (!existMenu[menuKey]) {
-        if (menusKeyMap[menuKey]) {
+        /**
+         * 初始化阶段：用户还没获取到菜单权限，menusKeyMap为null，应生成全部路由，否则刷新页面时都会转跳到首页
+         * 更新阶段：用户获取到菜单权限，menusKeyMap已更新，不为null，根据用户菜单权限重新生成路由
+         */
+        if (!menusKeyMap || menusKeyMap[menuKey]) {
           existMenu[menuKey] = menu
           existRoute[routeProps.path] = menu
           if (redirectProps && redirectProps['to']) {
             redirectsTemp.push(redirectProps)
           }
           return <Route key={menuKey} { ...routeProps } />
-        } else {
-          console.error(`警告：【${menuName}-${menuKey}】菜单路由无效！不存在该菜单ID！请先在菜单文件menus/menu.data.js中添加菜单配置`)
         }
       } else {
         const m = existMenu[menuKey]
@@ -65,11 +67,13 @@ export function getMenusMap(key = 'key', menuList=[]) {
   const menusMap = {}
   const generateMap = (list) => {
     list.map(item => {
-      const { children } = item || {}
-      if (children && children.length) {
-        generateMap(children)
+      if (item) {
+        const { children } = item
+        if (children && children.length) {
+          generateMap(children)
+        }
+        menusMap[item[key]] = item
       }
-      menusMap[item[key]] = item
     })
   }
   generateMap(menuList)
