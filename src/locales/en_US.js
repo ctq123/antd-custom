@@ -16,4 +16,6 @@ export default {
   'total items': 'Total { value } items',
   'sync +10': 'sync +10',
   'async +20': 'async +20',
+  'Here is a permission related button': 'Here is a permission related button: ',
+  'You have super permissions': 'You have super permissions',
 }

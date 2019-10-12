@@ -16,4 +16,6 @@ export default {
   'total items': '共 { value } 条',
   'sync +10': '同步 +10',
   'async +20': '异步 +20',
+  'Here is a permission related button': '这里有一个权限相关的按钮：',
+  'You have super permissions': '你有超级权限',
 }
