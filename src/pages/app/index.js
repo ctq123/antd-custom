@@ -25,7 +25,6 @@ class AppPage extends PureComponent {
       routes,
       existRoute,
       redirects,
-      menuLen: 0,
     }
   }
   

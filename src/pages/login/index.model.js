@@ -35,6 +35,7 @@ const model = {
     },
     'login/logout': (state) => {
       sessionStorage.removeItem('username')
+      sessionStorage.removeItem('permission')
       return { ...state, loginStatus: '' }
     },
     'login/resetData': (state, action) => {
