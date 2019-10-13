@@ -8,6 +8,17 @@
 
 antd + react + redux + webpack4 + router4基础框架，结合antd的UI框架，实现主题定制，使用最新版本的react16.9，webpack4和react-router4实现按需加载
 
+功能说明：
+1.动态路由
+2.菜单配置
+3.数据管理
+4.按需加载
+5.权限控制
+6.国际化语言
+7.本地mock服务
+8.路径alias别名
+9.安全CSRF防范
+
 ## 安装
 
 ```bash
