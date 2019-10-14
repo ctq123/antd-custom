@@ -29,6 +29,11 @@
 + [9.错误统一处理](#function.error)
 + [10.安全CSRF防范](#function.csrf)
 
+## 下载
+```bash
+git clone https://github.com/ctq123/antd-custom.git my-project
+cd my-project
+```
 
 ## 安装
 
@@ -55,7 +60,7 @@ or
 $ npm run build:prod
 ```
 
-## 使用min最小版本,切换至test分支
+## 使用最小版本min,切换至test分支
 ```bash
 $ git checkout test
 ```
@@ -189,7 +194,7 @@ app内菜单处理技术方案：
 >
 > 2）遍历pages/*目录下index.model.js找出effects，将其重新整合生成redux-saga
 >
-> 更多详情后面会起一篇文章介绍
+> 更多详情请看[redux最佳实践的前世今生2](https://github.com/ctq123/blogs/issues/2)
 
 **redux建议使用场景** 
 > 1.兄弟组件之间通信，不建议在直接父子组件中滥用redux
