@@ -29,18 +29,13 @@
 + [9.错误统一处理](#function.error)
 + [10.安全CSRF防范](#function.csrf)
 
-## 下载
+## 初始化项目
 ```bash
-git clone https://github.com/ctq123/antd-custom.git my-project
-cd my-project
+$ npm i yo -g
+$ npm i generator-antd-custom -g
+$ yo antd-custom
 ```
 
-## 安装
-
-```bash
-$ npm i
-
-```
 ## 运行
 
 ```bash
