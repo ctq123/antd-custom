@@ -59,6 +59,7 @@ class Sider extends PureComponent {
   }
 
   generateMenuItem = (data) => {
+    const { collapsed } = this.props
     return data.map(item => {
       if (item) {
         const { children, path, icon } = item
@@ -80,7 +81,7 @@ class Sider extends PureComponent {
         return (
           <MenuItem key={path}>
             { icon && <Icon type={icon} /> }
-            {translateText({ id: path })}
+            { !collapsed ? translateText({ id: path }) : '' }
           </MenuItem>
         )
       }

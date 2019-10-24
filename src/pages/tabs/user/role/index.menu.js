@@ -7,6 +7,7 @@ const menu = {
     path: '/app/users/roleManage',
     component: React.lazy(() => import(/* webpackChunkName: 'rolemanage' */'./index')),
   },
+  permKey: 'menu.roleManage',
 }
 
 export default menu

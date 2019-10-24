@@ -7,7 +7,7 @@ import Sider from '@components/layout/Sider'
 import Footer from '@components/layout/Footer'
 import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import styles from './index.less'
-import { getMenusMap, generateRoute } from '@menus/menu.route'
+import { generateRoute } from '@menus/menu.route'
 import { getCookie } from '@utils/handleCookie'
 import { setAxiosToken } from '@utils/handleAxios'
 
@@ -62,8 +62,9 @@ class AppPage extends PureComponent {
     if (menuList) {
       // 根据用户权限菜单重新生成菜单路由
       if (menuList.length != prevState.menuLen) {
-        const menusKeyMap = getMenusMap('key', menuList)
-        const { routes, existRoute, redirects } = generateRoute(menusKeyMap)
+        const permStr = sessionStorage.getItem('permission')
+        const permList = permStr ? JSON.parse(permStr) : []
+        const { routes, existRoute, redirects } = generateRoute(permList)
         return {
           routes,
           existRoute,

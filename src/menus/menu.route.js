@@ -3,9 +3,9 @@ import { Route, Redirect } from 'react-router-dom'
 
 /**
  * 根据index.menu.js配置生成路由
- * @param {menus菜单'key'类型的map} menusKeyMap 
+ * @param {用户权限列表} permList 
  */
-export function generateRoute (menusKeyMap=null) {
+export function generateRoute (permList=null) {
   // 读取所有index.menu.js文件
   const menus = require.context('../pages/tabs', true, /index\.menu\.js/)
   // 已有的菜单路由
@@ -18,14 +18,14 @@ export function generateRoute (menusKeyMap=null) {
   // 生成路由routes
   const routes = menus.keys().map(path => {
     const menu = menus(path).default
-    const { menuKey, menuName, routeProps, redirectProps } = menu || {}
+    const { menuKey, menuName, routeProps, redirectProps, permKey } = menu || {}
     if (menuKey && routeProps && routeProps.path) {
-      if (!existMenu[menuKey]) {
+      if (!existMenu[menuKey] && !existRoute[routeProps.path]) {
         /**
-         * 初始化阶段：用户还没获取到菜单权限，menusKeyMap为null，应生成全部路由，否则刷新页面时都会转跳到首页
-         * 更新阶段：用户获取到菜单权限，menusKeyMap已更新，不为null，根据用户菜单权限重新生成路由
+         * 初始化阶段：用户还没获取到权限，permList为null，应生成全部路由，否则刷新页面时都会转跳到首页
+         * 更新阶段：用户获取到权限，permList已更新，不为null，根据用户权限重新生成路由
          */
-        if (!menusKeyMap || menusKeyMap[menuKey]) {
+        if (!permList || permList.includes(permKey)) {
           existMenu[menuKey] = menu
           existRoute[routeProps.path] = menu
           if (redirectProps && redirectProps['to']) {
@@ -33,9 +33,12 @@ export function generateRoute (menusKeyMap=null) {
           }
           return <Route key={menuKey} { ...routeProps } />
         }
-      } else {
+      } else if(existMenu[menuKey]) {
         const m = existMenu[menuKey]
-        console.error(`警告：【${menuName}-${menuKey}】菜单路由无效！已存在相同的菜单ID【${m.menuName}-${m.menuKey}】，请在index.menu.js中重置menuKey！`)
+        console.error(`警告：【${menuName}-${menuKey}】菜单无效！已存在相同的菜单ID【${m.menuName}-${m.menuKey}】，请在index.menu.js中重置menuKey！`)
+      } else {
+        const m = existRoute[routeProps.path]
+        console.error(`警告：【${menuName}-${routeProps.path}】路由无效！已存在相同的路由路径【${m.menuName}-${m.routeProps.path}】，请在index.menu.js中重置routeProps.path！`)
       }
     } else {
       console.error(`警告：【${menuName}-${menuKey}】菜单路由无效！menuKey，routeProps，routeProps.path不能为空！`)
