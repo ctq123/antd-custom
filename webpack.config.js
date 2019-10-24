@@ -33,8 +33,8 @@ const progressPlugin = new ProgressBarWebpackPlugin({
 })
 
 const publishEnv = process.env.npm_lifecycle_event.replace('build:', '')
-const { branch } = GetRepoInfo()
-const RELEASE = `${publishEnv}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
+// const { branch } = GetRepoInfo()
+// const RELEASE = `${publishEnv}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
 
 // const serverHost = 'http://localhost:8080'
 // const apiPrex = ''
@@ -42,7 +42,7 @@ const RELEASE = `${publishEnv}__${branch.replace('/', '_')}__${moment().format('
 const definePlugin = new webpack.DefinePlugin({
   // HOST: publishEnv === 'dev' ? JSON.stringify(serverHost) : JSON.stringify(apiPrex),
   NODE_ENV: JSON.stringify(publishEnv),
-  RELEASE: JSON.stringify(RELEASE)
+  // RELEASE: JSON.stringify(RELEASE)
 })
 
 // const uglifyjsPlugin = new UglifyJsPlugin({
