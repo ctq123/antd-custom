@@ -9,6 +9,7 @@ const menu = {
     path: '/app',
     component: React.lazy(() => import(/* webpackChunkName: 'home' */'./index')),
   },
+  permKey: 'menu.home',
 }
 
 export default menu

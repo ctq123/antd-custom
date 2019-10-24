@@ -1,12 +1,16 @@
 import React, { PureComponent } from 'react'
 import { Layout } from 'antd'
-import styles from './Footer.less'
 
 class Footer extends PureComponent {
 
   render() {
+    const styles = {
+      textAlign: 'center',
+      padding: 0,
+      paddingBottom: 24
+    }
     return (
-      <Layout.Footer className={styles.footer}>
+      <Layout.Footer style={styles}>
         Ant Design ©2018 Created by Ant UED
       </Layout.Footer>
     )

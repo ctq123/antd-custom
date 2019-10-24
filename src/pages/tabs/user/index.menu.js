@@ -10,7 +10,8 @@ const menu = {
   redirectProps: {
     from: '/app/users',
     to: '/app/users/userManage',
-  }
+  },
+  permKey: 'menu.userManage',
 }
 
 export default menu
