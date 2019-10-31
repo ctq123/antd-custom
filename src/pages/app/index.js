@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 import Header from '@components/layout/Header'
 import Sider from '@components/layout/Sider'
 import Footer from '@components/layout/Footer'
-import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import styles from './index.less'
 import { generateRoute } from '@menus/menu.route'
-import { getCookie } from '@utils/handleCookie'
+import { getCookie, devSetCookieToken } from '@utils/handleCookie'
 import { setAxiosToken } from '@utils/handleAxios'
+import { toLoginPage } from '@utils/handleLogin'
 
 const { Content } = Layout
 
@@ -30,41 +30,33 @@ class AppPage extends PureComponent {
   
   componentDidMount() {
     const { dispatch } = this.props
-    const username = sessionStorage.getItem('username')
+    // 设置本地开发环境cookie的token
+    devSetCookieToken()
+
     const token = getCookie('token')
-    if (!this.state.loginStatus) {
-      this.goToPage('/login')
-    }
     if (token) {
       setAxiosToken(token)
       // 获取用户权限列表
       dispatch({
         type: 'app/get/permission',
         payload: {
-          username
+          token
         }
       })
     } else {
-      // this.goToPage('/login')
-      dispatch({
-        type: 'login/logout',
-      })
+      // 转跳登陆页面
+      toLoginPage()
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { menuList } = nextProps
-    if (nextProps.loginStatus !== prevState.loginStatus) {
-      return {
-        loginStatus: nextProps.loginStatus,
-      }
-    }
     if (menuList) {
-      // 根据用户权限菜单重新生成菜单路由
+      // 根据用户权限菜单重新生成路由
       if (menuList.length != prevState.menuLen) {
         const permStr = sessionStorage.getItem('permission')
         const permList = permStr ? JSON.parse(permStr) : []
-        const { routes, existRoute, redirects } = generateRoute(permList)
+        const { routes, existRoute, redirects } = generateRoute(menuList, permList)
         return {
           routes,
           existRoute,
@@ -77,8 +69,14 @@ class AppPage extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.state.loginStatus) {
-      this.goToPage('/login')
+    if (prevState.menuLen != this.state.menuLen) {
+      const { existRoute } = this.state
+      this.props.dispatch({
+        type: 'app/reset/state',
+        payload: {
+          existRoute
+        }
+      })
     }
   }
 
@@ -109,7 +107,7 @@ class AppPage extends PureComponent {
         <Layout>
           <Header collapsed={collapsed} history={history} toggle={this.toggle} />
           <Content className={styles.content}>
-            <Breadcrumb history={history} menuList={menuList} />
+            {/* <Breadcrumb /> */}
             <Suspense fallback={<div>Loading...</div>}>
               <Fragment>
                 <Switch>

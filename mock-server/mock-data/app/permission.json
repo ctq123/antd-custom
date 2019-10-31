@@ -1,13 +1,17 @@
 {
-  "errorMessages": [],
-  "model": [
-    "menu.home",
+  "username": "开发者",
+  "pk": 113,
+  "is_success": true,
+  "perms": [
+    "srm.route_optool",
+    "srm.route_exception-handle",
+    "srm.route_eh_outstock",
+    "srm.route_eh_sign",
+    "srm.route_example",
     "menu.system",
     "menu.users",
     "menu.userManage",
     "menu.roleManage",
     "module.adminButton"
-  ],
-  "success": true,
-  "firstErrorMessage": null
+  ]
 }

@@ -3,6 +3,7 @@ import { Layout, Menu, Icon } from 'antd'
 import styles from './Sider.less'
 import { injectIntl } from 'react-intl'
 import { translateText } from '@utils/translate'
+import logoImg from '@assets/img/logo3.svg'
 
 const { SubMenu } = Menu
 const MenuItem = Menu.Item
@@ -59,10 +60,9 @@ class Sider extends PureComponent {
   }
 
   generateMenuItem = (data) => {
-    const { collapsed } = this.props
     return data.map(item => {
       if (item) {
-        const { children, path, icon } = item
+        const { children, path, icon, transKey } = item
         if (children && children.length) {
           return (
             <SubMenu
@@ -70,7 +70,7 @@ class Sider extends PureComponent {
             title={
               <span>
                 { icon && <Icon type={icon} /> }
-                <span>{translateText({ id: path })}</span>
+                <span>{translateText({ id: transKey })}</span>
               </span>
             }
           >
@@ -81,7 +81,7 @@ class Sider extends PureComponent {
         return (
           <MenuItem key={path}>
             { icon && <Icon type={icon} /> }
-            { !collapsed ? translateText({ id: path }) : '' }
+            <span>{translateText({ id: transKey })}</span>
           </MenuItem>
         )
       }
@@ -89,13 +89,17 @@ class Sider extends PureComponent {
   }
 
   render() {
-    const { collapsed, menuList } = this.props
+    const { menuList, collapsed } = this.props
     const { selectedKey, defaultOpenKeys } = this.state
     
     return (
       <Layout.Sider className={styles.sider} trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu theme="dark" 
+        <div className={styles.logo}>
+          <img src={logoImg} />
+          <span className={collapsed ? styles.hide : ''}>{translateText({ id: 'SystemName' })}</span>
+         </div>
+        <Menu 
+          theme="dark" 
           mode="inline" 
           onClick={this.onClick}
           selectedKeys={[selectedKey]}

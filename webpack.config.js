@@ -11,19 +11,24 @@ const moment = require('moment')
 const HappyPack = require('happypack')
 const os = require('os')
 const mock = require('cf-mock-server/express-mw')
+const envConfig = require('./my.env.config')
 
 const htmlPlugin = new HtmlWebpackPlugin({
+  title: '供应商运营中心',
   template: path.join(__dirname, 'public/index.html'),
   filename: './index.html'
 })
 const cssPlugin = new MiniCssExtractPlugin({
-  filename: '[name]-[chunkhash:8].css',
-  chunkFilename: '[name]-[chunkhash:8].css'
+  filename: 'css/[name]-[chunkhash:8].css',
+  chunkFilename: 'css/[name]-[chunkhash:8].css'
 })
 const cleanPlugin = new CleanWebpackPlugin(['dist'])
 const copyPlugin = new CopyWebpackPlugin([
   {
-    from: path.join(__dirname, './assets'), to: 'assets/'
+    from: path.join(__dirname, './assets/'), to: './'
+  },
+  {
+    from: path.join(__dirname, './public/favicon.ico'), to: './'
   }
 ])
 const progressPlugin = new ProgressBarWebpackPlugin({
@@ -33,16 +38,20 @@ const progressPlugin = new ProgressBarWebpackPlugin({
 })
 
 const publishEnv = process.env.npm_lifecycle_event.replace('build:', '')
-// const { branch } = GetRepoInfo()
-// const RELEASE = `${publishEnv}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
+const { branch } = GetRepoInfo()
+const envObj = publishEnv ? envConfig[publishEnv] : {}
+const RELEASE = `${envObj.ENV}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
 
 // const serverHost = 'http://localhost:8080'
 // const apiPrex = ''
 
+// 注意local才是本地开发环境，dev是develop分支环境
 const definePlugin = new webpack.DefinePlugin({
-  // HOST: publishEnv === 'dev' ? JSON.stringify(serverHost) : JSON.stringify(apiPrex),
-  NODE_ENV: JSON.stringify(publishEnv),
-  // RELEASE: JSON.stringify(RELEASE)
+  NODE_ENV: JSON.stringify(envObj.ENV),
+  CDN_URL: JSON.stringify(envObj.CDN_URL),
+  AUTH_SERVICE: JSON.stringify(envObj.AUTH_SERVICE),
+  PRODUCT_SERVICE: JSON.stringify(envObj.PRODUCT_SERVICE),
+  RELEASE: JSON.stringify(RELEASE)
 })
 
 // const uglifyjsPlugin = new UglifyJsPlugin({
@@ -64,12 +73,7 @@ const happyPack = new HappyPack({
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-transform-runtime',
-        ['import',{
-          libraryName:'antd',
-          libraryDirectory: 'es',
-          style:true
-        }]
-      ]
+      ],
     }
   }],
   //共享进程池
@@ -90,8 +94,9 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.join(__dirname, './dist/'),
-      filename: '[name]-[chunkhash:8].js',
-      chunkFilename: '[name]-[chunkhash:8].js'
+      publicPath: envObj.CDN_URL,
+      filename: 'js/[name]-[chunkhash:8].js',
+      chunkFilename: 'js/[name]-[chunkhash:8].js'
     },
     module: {
       rules: [{
@@ -109,14 +114,14 @@ module.exports = (env, argv) => {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[local]'
+              localIdentName: '[name]-[local]-[hash:5]',
             }
           }, {
             loader: 'less-loader',
             options: {
               modules: true,
               localIdentName: '[name]-[local]-[hash:5]',
-              javascriptEnabled: true
+              javascriptEnabled: true,
             }
           }, {
             loader: 'postcss-loader'
@@ -133,7 +138,7 @@ module.exports = (env, argv) => {
           loader: 'less-loader',
           options: {
             modifyVars: {
-              'primary-color': '#1DA57A',
+              'primary-color': '#F5222D',
               'border-radius-base': '2px'
             },
             javascriptEnabled: true
@@ -144,8 +149,8 @@ module.exports = (env, argv) => {
         use: [{
           loader: 'url-loader',
           options: {
-            name: '[name].[ext]',
-            limit: 10240
+            name: 'img/[name].[ext]',
+            limit: 10240,
           }
         }]
       }]

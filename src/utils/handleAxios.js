@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { notification } from 'antd'
+import { logout } from '@utils/handleLogin'
 
 const codeMessage = {
   400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
@@ -15,6 +16,7 @@ const codeMessage = {
   504: '网关超时。',
 };
 
+// 网络异常拦截器
 const errorHandler = (resp) => {
   if (resp) {
     const { status, statusText, config } = (resp && resp.response) || {}
@@ -27,8 +29,8 @@ const errorHandler = (resp) => {
       case 401:
         // 没有认证
         setTimeout(()=> {
-          sessionStorage.removeItem('username')
-          location.href = '/#/login'
+          // 登出
+          logout()
         }, 1000)
         break
       default:
@@ -43,13 +45,28 @@ const errorHandler = (resp) => {
   return Promise.reject(resp)
 }
 
+// 业务错误拦截器，暂时不使用
+const failHandler = (resp) => {
+  const { data } = resp || {}
+  if (data && data.hasOwnProperty('success') && data.hasOwnProperty('firstErrorMessage')) {
+    if (data.success) {
+      return Promise.resolve(data)
+    } else {
+      return Promise.reject(data.firstErrorMessage)
+    }
+  } else {
+    // 非法
+    return Promise.reject(resp)
+  }
+}
+
 export function setAxiosToken(token) {
   axios.defaults.headers.common['Authorization'] = token
 }
 
 export function setAxiosBase() {
   axios.defaults.baseURL = ''
-  // axios.defaults.headers.post['Content-Type'] = 'application/json'
+  axios.defaults.headers.post['Content-Type'] = 'application/json'
   axios.defaults.withCredentials = true
   axios.interceptors.response.use((resp) => {
     return Promise.resolve(resp)

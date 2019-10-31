@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 
 import { translateText } from '@utils/translate'
+import avatarImg from '@assets/img/avatar.jpeg'
+import { logout } from '@utils/handleLogin'
 
 const { SubMenu } = Menu
 
@@ -15,9 +17,7 @@ class Header extends PureComponent {
 
   handleClickSignout = e => {
     if (e.key === 'SignOut') {
-      this.props.dispatch({
-        type: 'login/logout',
-      })
+      logout()
     }
   }
 
@@ -38,12 +38,13 @@ class Header extends PureComponent {
   }
 
   render() {
+    const username = sessionStorage.getItem('username')
     const { collapsed, language, languages } = this.props
     const currentLanguage = languages.find(item => item.key === language)
     return (
       <Layout.Header className={styles.header}>
         <Icon
-          className="trigger"
+          className={styles.trigger}
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
@@ -75,8 +76,8 @@ class Header extends PureComponent {
                   <span style={{ color: '#999', marginRight: 4 }}>
                     {translateText({ id: 'Hi,' })}
                   </span>
-                  <span>{'guest'}</span>
-                  <Avatar style={{ marginLeft: 8 }} src={'../../../assets/img/avatar.jpeg'} />
+                  <span>{username}</span>
+                  <Avatar style={{ marginLeft: 8 }} src={avatarImg} />
                 </Fragment>
               }
             >

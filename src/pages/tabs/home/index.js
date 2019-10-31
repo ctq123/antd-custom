@@ -1,43 +1,15 @@
 import React from 'react'
-import { Button } from 'antd'
-import { connect } from 'react-redux'
-import { translateText } from '@utils/translate'
+import styles from './index.less'
 
 const Home = (props) => {
 
-  const onIncrement = (e) => {
-    props.dispatch({
-      type: 'home/increment',
-      payload: 10,
-    })
-  } 
-
-  const onIncrementAsync = (e) => {
-    props.dispatch({
-      type: 'home/increment/async',
-      payload: {
-        data: 20,
-      },
-    })
-  }
-
   return (
-    <aside>
-      <Button type='primary' onClick={onIncrement}>{ translateText({ id: 'sync +10' }) }</Button>
-      <Button type='primary' onClick={onIncrementAsync} loading={props.loading}>{ translateText({ id: 'async +20' }) }</Button>
-      <h4>count: { props.count }</h4>
+    <aside className={styles.content}>
+      <div className={styles.body}>
+        <h2>欢迎使用XXXX系统</h2>
+      </div>
     </aside>
   )
 }
 
-const mapDispatchToProp = (dispatch) => {
-  return { dispatch }
-}
-
-const mapStateToProp = state => {
-  // 对应index.model.js中的name
-  const { home } = state
-  return home
-}
-
-export default connect(mapStateToProp, mapDispatchToProp)(Home)
+export default Home

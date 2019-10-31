@@ -1,8 +1,8 @@
 import React from 'react'
 
-const menu = {
-  menuKey: '32',
-  menuName: '角色管理',
+const route = {
+  name: '角色管理',
+  transKey: 'Role Management',
   routeProps: {
     path: '/app/users/roleManage',
     component: React.lazy(() => import(/* webpackChunkName: 'rolemanage' */'./index')),
@@ -10,4 +10,4 @@ const menu = {
   permKey: 'menu.roleManage',
 }
 
-export default menu
+export default route

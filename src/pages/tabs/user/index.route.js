@@ -1,17 +1,13 @@
 import React from 'react'
 
-const menu = {
-  menuKey: '31',
-  menuName: '用户管理',
+const route = {
+  name: '用户管理',
+  transKey: 'User Management',
   routeProps: {
     path: '/app/users/userManage',
     component: React.lazy(() => import(/* webpackChunkName: 'usermanage' */'./index')),
   },
-  redirectProps: {
-    from: '/app/users',
-    to: '/app/users/userManage',
-  },
   permKey: 'menu.userManage',
 }
 
-export default menu
+export default route
