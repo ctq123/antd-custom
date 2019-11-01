@@ -62,7 +62,7 @@ class Sider extends PureComponent {
   generateMenuItem = (data) => {
     return data.map(item => {
       if (item) {
-        const { children, path, icon, transKey } = item
+        const { children, path, icon, transKey, name='' } = item
         if (children && children.length) {
           return (
             <SubMenu
@@ -70,7 +70,7 @@ class Sider extends PureComponent {
             title={
               <span>
                 { icon && <Icon type={icon} /> }
-                <span>{translateText({ id: transKey })}</span>
+                <span>{ transKey ? translateText({ id: transKey }) : name }</span>
               </span>
             }
           >
@@ -81,7 +81,7 @@ class Sider extends PureComponent {
         return (
           <MenuItem key={path}>
             { icon && <Icon type={icon} /> }
-            <span>{translateText({ id: transKey })}</span>
+            <span>{ transKey ? translateText({ id: transKey }) : name }</span>
           </MenuItem>
         )
       }

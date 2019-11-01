@@ -55,14 +55,12 @@ export const menus = [
   },
   {
     name: '运营工具', 
-    transKey: 'Operational Tool', 
     path: '/app/optool', 
     icon: 'tool', 
     permKey: 'srm.route_optool', 
     children: [
       { 
         name: '异常处理', 
-        transKey: 'Exception Handling', 
         path: '/app/optool/exceptionHandle', 
         permKey: 'srm.route_exception-handle', 
         children: [] 

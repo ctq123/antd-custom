@@ -56,36 +56,40 @@ class Breadcrumbs extends PureComponent {
     const paths = (pathname || '').split('/')
     const keys = []
     const names = []
+    const trans = []
 
     if (paths && paths.length > 2) {
       for(let i = 2; i <= paths.length; i++) {
         let p = paths.slice(0, i).join('/')
         if (this.menusPathMap[p]) {
-          const { path, transKey } = this.menusPathMap[p]
-          keys.push(path)
-          names.push(transKey)
-        } else if (this.routePathMap[p]) {
-          const { transKey } = this.routePathMap[p]
+          const { transKey, name } = this.menusPathMap[p]
           keys.push(p)
-          names.push(transKey)
+          names.push(name)
+          trans.push(transKey)
+        } else if (this.routePathMap[p]) {
+          const { transKey, name } = this.routePathMap[p]
+          keys.push(p)
+          names.push(name)
+          trans.push(transKey)
         }
       }
     }
-    return this.generateItem(keys, names)
+    return this.generateItem(keys, trans, names)
   }
 
-  generateItem = (keys, names) => {
+  generateItem = (keys, trans, names) => {
     const { intl } = this.props
     if (!keys || keys.length < 1 || (keys.length === 1 && keys[0] === '/app')) {
       return <BreadcrumbItem>{intl.formatMessage({ id: 'Home' })}</BreadcrumbItem>
     } else {
       const n = keys.length - 1
       return keys.map((key, index) => {
-        const id = names[index]
+        const id = trans[index]
+        const name = names[index] || ''
         if (key) {
           return index < n 
-          ? <BreadcrumbItem key={ key }><Link to={ key }>{ intl.formatMessage({ id }) }</Link></BreadcrumbItem>
-          : <BreadcrumbItem key={ key }>{ intl.formatMessage({ id }) }</BreadcrumbItem>
+          ? <BreadcrumbItem key={ key }><Link to={ key }>{ id ? intl.formatMessage({ id }) : name }</Link></BreadcrumbItem>
+          : <BreadcrumbItem key={ key }>{ id ? intl.formatMessage({ id }) : name }</BreadcrumbItem>
         }
       })
     }
