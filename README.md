@@ -13,11 +13,11 @@
 2）多选择性：该框架有目前存在多个版本供大家选择
 > 1）test分支（min版本，里面只有静态菜单路由，数据管理，按需加载几个简单功能，适合小型项目）
 >
-> 2）master分支（默认，稳定版本，本文档中介绍都是该分支，适合中型项目）
+> 2）master分支（默认，稳定版本）
 >
-> 3）develop分支（开发版本，最新版本）
+> 3）develop分支（开发版本，最新的版本）
 >
-> 4）super分支（升级版本，实际应用版本）
+> 4）pre分支（健全版本，由min版本升级后的第一个版本，功能相对健全）
 
 功能说明：
 + [1.菜单配置](#function.menus)
@@ -31,11 +31,16 @@
 + [9.错误统一处理](#function.error)
 + [10.安全CSRF防范](#function.csrf)
 
-## 初始化项目
+## 初始化项目（下载的是master分支）
 ```bash
 $ npm i yo -g
 $ npm i generator-antd-custom -g
 $ yo antd-custom
+```
+
+## 切换至当前版本分支
+```bash
+$ git checkout pre
 ```
 
 ## 运行
@@ -55,11 +60,6 @@ $ npm run build:test
 or
 ```bash
 $ npm run build:prod
-```
-
-## 使用最小版本min,切换至test分支
-```bash
-$ git checkout test
 ```
 
 ## 结构说明
