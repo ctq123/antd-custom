@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Form, Row, Col, Input, Button, Select } from 'antd'
+import { Form, Row, Col, Input, Button, Select, message } from 'antd'
 import { injectIntl } from 'react-intl'
 import axios from 'axios'
 import styles from './index.less'
@@ -38,16 +38,19 @@ class SearchFormClass extends PureComponent {
     axios.get('/api/user/list', { params })
     .then(resp => {
       // console.log("resp", resp)
-      const { success, model, totalRecord } = (resp && resp.data) || {}
-      if (success && model) {
+      const { rows, totalCount } = resp || {}
+      if (rows) {
         onReaultCB && onReaultCB({ 
-          data: model,
+          data: rows,
           pagination: {
             ...pagination,
-            total: totalRecord
+            total: totalCount
           }
         })
       }
+    })
+    .catch(err => {
+      message.error(err['errorMsg'] || '查询失败！')
     })
     .finally(()=> {
       onReaultCB && onReaultCB({ loading: false })

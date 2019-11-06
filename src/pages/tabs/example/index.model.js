@@ -30,13 +30,7 @@ const model = {
     'example/increment/async': function*({ payload }, { call, put }) {
       const resp = yield call(increment, payload)
       if (resp) {
-        console.log("resp", resp)
-        const { model, success } = (resp && resp.data) || {}
-        if (success) {
-          yield put({ type: 'example/increment/async/success', payload: model })
-        } else {
-          yield put({ type: 'example/increment/async/fail' })
-        }
+        yield put({ type: 'example/increment/async/success', payload: resp })
       } else {
         yield put({ type: 'example/increment/async/fail' })
       }

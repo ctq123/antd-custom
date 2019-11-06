@@ -18,10 +18,8 @@ const System = () => {
       const url = `api/chart${type}`
       axios.get(url)
       .then(resp => {
-        const { success, model } = (resp && resp.data) || {}
-        if (success && model) {
-          type === 1 ? setData1(model) : setData2(model)
-        }
+        console.log("resp", resp)
+        type === 1 ? setData1(resp) : setData2(resp)
       })
       .catch(e => {})
     }

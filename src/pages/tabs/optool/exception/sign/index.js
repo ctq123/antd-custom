@@ -72,19 +72,15 @@ const Sign = (props) => {
       const data = { trackingNos: res.result }
       axios.post('/manager/operation_tools/t4_stock_rate/exception_process', JSON.stringify(data))
       .then(resp => {
-        const { success, firstErrorMessage } = (resp && resp.data) || {}
-        if (success) {
-          message.success('操作成功！')
-          setNos('')
-        } else if (firstErrorMessage) {
-          const { displayMessage } = firstErrorMessage
-          Modal.error({
-            title: '操作失败',
-            content: displayMessage
-          })
-        }
+        message.success('操作成功！')
+        setNos('')
       })
-      .catch(err => {})
+      .catch(err => {
+        Modal.error({
+          title: '操作失败',
+          content: err['errorMsg'] || err
+        })
+      })
     }
   }
 
