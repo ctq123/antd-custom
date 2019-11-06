@@ -32,11 +32,17 @@
 + [10.安全CSRF防范](#function.csrf)
 + [11.导出当前页](#function.export)
 
-## 初始化项目
+## 初始化项目（下载的是master分支）
 ```bash
 $ npm i yo -g
 $ npm i generator-antd-custom -g
 $ yo antd-custom
+```
+
+## 切换至指定版本分支
+```bash
+$ git checkout N
+N = test || develop || pre
 ```
 
 ## 运行
@@ -56,11 +62,6 @@ $ npm run build:test
 or
 ```bash
 $ npm run build:prod
-```
-
-## 使用最小版本min,切换至test分支
-```bash
-$ git checkout test
 ```
 
 ## 结构说明
