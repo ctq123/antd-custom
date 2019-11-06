@@ -14,7 +14,7 @@ export default {
   'Processe Out of stock': 'Processe Out of stock',
   'Processe Sign yield': 'Processe Sign yield',
   'createTime': 'createTime',
-  'amount': 'amount',
+  'name': 'name',
   'type': 'type',
   'code': 'code',
   'action': 'action',

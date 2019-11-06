@@ -14,7 +14,7 @@ export default {
   'Processe Out of stock': '缺货率处理',
   'Processe Sign yield': '签收率处理',
   'createTime': '创建时间',
-  'amount': '数量',
+  'name': '姓名',
   'type': '类型',
   'code': '编码',
   'action': '操作',

@@ -14,7 +14,7 @@ const mock = require('cf-mock-server/express-mw')
 const envConfig = require('./my.env.config')
 
 const htmlPlugin = new HtmlWebpackPlugin({
-  title: '供应商运营中心',
+  title: 'XXXX系统',
   template: path.join(__dirname, 'public/index.html'),
   filename: './index.html'
 })

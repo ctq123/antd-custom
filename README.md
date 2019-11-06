@@ -13,11 +13,11 @@
 2）多选择性：该框架有目前存在多个版本供大家选择
 > 1）test分支（min版本，里面只有静态菜单路由，数据管理，按需加载几个简单功能，适合小型项目）
 >
-> 2）master分支（默认，稳定版本，本文档中介绍都是该分支，适合中型项目）
+> 2）master分支（默认，稳定版本）
 >
 > 3）develop分支（开发版本）
 >
-> 4）super分支（升级版本）
+> 4）pre分支（健全版本，由min版本升级后的第一个版本，功能相对健全）
 
 功能说明：
 + [1.菜单配置](#function.menus)
@@ -30,6 +30,7 @@
 + [8.路径alias别名](#function.alias)
 + [9.错误统一处理](#function.error)
 + [10.安全CSRF防范](#function.csrf)
++ [11.导出当前页](#function.export)
 
 ## 初始化项目
 ```bash
@@ -83,6 +84,7 @@ $ git checkout test
 + [8.路径alias别名](#function.alias)
 + [9.错误统一处理](#function.error)
 + [10.安全CSRF防范](#function.csrf)
++ [11.导出当前页](#function.export)
 
 
 ### <span id="function.menus">1.菜单配置</span>
@@ -95,7 +97,7 @@ $ git checkout test
 涉及范围：
 > menus/menu.data.js
 >
-> tabs/../index.menu.js
+> tabs/../index.route.js
 
 ### <span id="function.route">2.动态路由</span>
 项目中采用[react-router4](https://reacttraining.com/react-router/)管理路由，路由又分为静态路由和动态路由
@@ -105,11 +107,11 @@ $ git checkout test
 2）动态路由：pages/app/index.js中采用的是动态生成路由，它会因为用户权限的不同而存在差异
 
 动态生成路由逻辑：
-> 1）先去pages/tabs业务目录下查找出所有业务模块index.menu.js文件
+> 1）先去pages/tabs业务目录下查找出所有业务模块index.route.js文件
 >
-> 2）根据index.menu.js查找routeProps属性生成Route
+> 2）根据index.route.js查找routeProps属性生成Route
 >
-> 3）根据index.menu.js查找redirectProps属性生成Redirect（若存在的话，比如user模块）
+> 3）根据传入用户菜单列表的menuList查找父级菜单下的第一个子菜单生成Redirect（业务需求：点击父级菜单路由会转跳至第一个有效子菜单）
 >
 > 详情：menus/menu.route.js
 
@@ -118,7 +120,7 @@ $ git checkout test
 >
 > menus/menu.route.js
 >
-> tabs/../index.menu.js
+> tabs/../index.route.js
 
 app内菜单处理技术方案：
 > 1）路由转跳方案：点击菜单加载tab页面文件，转跳到对应的路由并渲染页面，本项目采用的是路由转跳处理方案
@@ -132,10 +134,12 @@ app内菜单处理技术方案：
 1）菜单权限：
 在menus/menu.data.js路由中配置permKey值，获取到用户权限列表后，重新生成新的菜单列表
 
-2）功能权限：
-若页面中存在某个按钮只有某些角色（权限）才能看到，根据用户权限列表判断是否需要显示该按钮，如tabs/system模块
+2）路由权限：
+在index.route.js路由中配置permKey值，获取到用户权限列表后，重新生成新的路由列表
 
-开发过程中权限key值需要后端协商确定一致性
+3）功能权限：
+若页面中存在某个按钮只有某些角色（权限）才能看到，根据用户权限列表判断是否需要显示该按钮，如tabs/example模块
+
 
 涉及范围：
 > pages/app/index.js
@@ -145,11 +149,12 @@ app内菜单处理技术方案：
 > menus/menu.permission.js
 >
 > utils/permission.js
+>
+> tabs/../index.route.js
 
 更多权限技术方案：
 > 1）前后端结合方案：用户登陆后，获取用户权限列表，前端根据用户权限列表生成相应的菜单，但需要前端配置菜单权限key值；
->> 优势：菜单权限和功能权限可以一次性获取
->> 劣势：前后端需要一起确定权限key值，增加沟通成本
+>> 优势：路由权限和功能权限可以一次性获取
 >
 > 2）后端判断方案：用户登陆后，后端判断该用户权限，直接返回菜单列表，前端直接显示
 >> 优势：前端不需要重新生成菜单，也不需要配置权限key值
@@ -306,7 +311,7 @@ jsconfig.json
 
 1）网络错误：网络请求状态为401，404，503等错误，并提示对应的信息。
 
-2）业务错误：这种没有网络异常（即返回状态为200），通常后端返回的数据都会经过一层包装，若数据中存在success的状态，若为false，即发生了业务异常，需要对其进行特殊处理。本项目中业务异常返回到各模块中进行处理，若需要在拦截层做统一处理，可在utils/handleAxios.js的setAxiosBase中添加处理。
+2）业务错误：这种没有网络异常（即返回状态为200），通常后端返回的数据都会经过一层包装，若数据中存在success的状态，若为false，即发生了业务异常，需要对其进行特殊处理。本项目中业务异常返回到各模块中进行处理，在拦截层做统一处理，若成功直接返回真正可用的data数据；若失败，先提取后端返回的错误信息，并与原始数据一起直接返回给view层，至于如何处理错误，由view层自己决定
 
 涉及范围：
 > utils/handleAxios.js
@@ -318,4 +323,14 @@ jsconfig.json
 
 涉及范围：
 > utils/handleAxios.js
+
+### <span id="function.export">11.导出当前页</span>
+采用xlsx依赖包，它比file-saver更出色，提供多种导出文件格式并且提供样式导出，比如合并单元格等
+
+对antd的columns进行解析和封装，使用时直接调用方法即可，优雅简单，不需要其他配置
+
+涉及范围：
+> utils/exportTableData.js
+>
+> utils/download-file.js
 
