@@ -4,6 +4,10 @@
  * @param {用户权限列表} permList 
  */
 export function checkAccessPermission(permkey, permList=[]) {
+  // 特殊配置
+  if (permkey === true) {
+    return true
+  }
   if (permkey) {
     if (!permList.length || !Array.isArray(permList)) {// 权限列表为空或非数组
       const permStr = sessionStorage.getItem('permission')

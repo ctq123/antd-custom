@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
-import { Table, Pagination } from 'antd'
+import { Table, Pagination, Button } from 'antd'
 import moment from 'moment'
-import axios from 'axios'
 import { injectIntl } from 'react-intl'
+import Breadcrumb from '@components/breadcrumb/Breadcrumb'
+import { exportPageData } from '@utils/exportTableData'
+import SearchForm from './searchForm'
+import styles from './index.less'
 
 class User extends PureComponent {
   constructor(props) {
@@ -20,8 +23,8 @@ class User extends PureComponent {
           }
         },
         {
-          title: `${intl.formatMessage({ id: 'amount' })}`,
-          dataIndex: 'spNum',
+          title: `${intl.formatMessage({ id: 'name' })}`,
+          dataIndex: 'name',
           width: 100,
           render: (text) => text ? text : 0
         },
@@ -38,7 +41,7 @@ class User extends PureComponent {
         {
           title: `${intl.formatMessage({ id: 'action' })}`,
           dataIndex: 'action',
-          render: () => <a>Delete</a>,
+          render: () => <a onClick={() => {}}>Delete</a>,
         },
       ],
       data: [],
@@ -52,41 +55,7 @@ class User extends PureComponent {
   }
 
   componentDidMount() {
-    this.getUserList()
-  }
-
-  getUserList() {
-    const { pagination } = this.state
-    this.setState({
-      loading: true
-    })
-    let data = {
-      ...pagination
-    }
-
-    axios({
-      method: 'get',
-      url: '/api/user/list',
-      params: data
-    })
-    .then(resp => {
-      // console.log("resp", resp)
-      const { success, model, totalRecord } = (resp && resp.data) || {}
-      if (success && model) {
-        this.setState({
-          data: model,
-          pagination: {
-            ...pagination,
-            total: totalRecord
-          }
-        })
-      }
-    })
-    .finally(()=> {
-      this.setState({
-        loading: false
-      })
-    })
+    this.callFormSearch()
   }
 
   onShowSizeChange = (cur_page, page_size) => {
@@ -95,10 +64,10 @@ class User extends PureComponent {
     this.setState({
       pagination: {
         ...pagination,
-        pageNum: cur_page,
+        pageNum: 1,
         pageSize: page_size
       }
-    })
+    }, () => { this.callFormSearch() })
   }
 
   onChange = (page) => {
@@ -109,25 +78,60 @@ class User extends PureComponent {
         ...pagination,
         pageNum: page,
       }
+    }, () => { this.callFormSearch() })
+  }
+
+  callFormSearch = (data = {}) => {
+    this.form && this.form.handleSearch(data)
+  }
+
+  handleReaultCB = (resp = {}) => {
+    this.setState({
+      ...resp
     })
+  }
+
+  handleLoadingCB = (loading) => {
+    this.setState({ loading })
+  }
+
+  exportData = (e) => {
+    const { data, columns } = this.state
+    exportPageData(data, columns, '用户管理')
   }
 
 
   render() {
     const { data, columns, loading, pagination } = this.state
     const { intl } = this.props
+    const formProps = {
+      loading,
+      pagination,
+      onReaultCB: this.handleReaultCB,
+      onLoadingCB: this.handleLoadingCB
+    }
 
     return (
-      <aside>
-        <Table bordered pagination={false} columns={columns} dataSource={data} rowKey='id' loading={loading} />
-        <Pagination 
-          className='pagination-right'
-          showSizeChanger
-          showTotal={total => `${intl.formatMessage({id: 'total items'}, { value: total })}`}
-          current={pagination.pageNum} 
-          total={pagination.total} 
-          onShowSizeChange={this.onShowSizeChange}
-          onChange={this.onChange} />
+      <aside className={styles.content}>
+        <div className={styles.body}>
+          <div className={styles.bread}>
+            <Breadcrumb />
+          </div>
+          <SearchForm wrappedComponentRef={(form) => this.form = form} { ...formProps } />
+          <hr />
+          <div className={styles.flex}>
+            <Button type="primary" onClick={(e) => this.exportData(e)}>导出当前页</Button>
+            <Pagination 
+              className='pagination-right'
+              showSizeChanger
+              showTotal={total => `${intl.formatMessage({id: 'total items'}, { value: total })}`}
+              current={pagination.pageNum} 
+              total={pagination.total} 
+              onShowSizeChange={this.onShowSizeChange}
+              onChange={this.onChange} />
+          </div>
+          <Table bordered pagination={false} columns={columns} dataSource={data} rowKey='id' loading={loading} />
+        </div>
       </aside>
     )
   }

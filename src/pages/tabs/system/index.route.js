@@ -1,8 +1,8 @@
 import React from 'react'
 
-const menu = {
-  menuKey: '2',
-  menuName: '系统配置',
+const route = {
+  name: '系统配置',
+  transKey: 'System Configuration',
   routeProps: {
     path: '/app/system',
     component: React.lazy(() => import(/* webpackChunkName: 'system' */'./index')),
@@ -10,4 +10,4 @@ const menu = {
   permKey: 'menu.system',
 }
 
-export default menu
+export default route

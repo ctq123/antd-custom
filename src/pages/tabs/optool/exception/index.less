@@ -1,0 +1,32 @@
+.content {
+  .header {
+    padding: 12px 24px;
+    background-color: #fff;
+    .title {
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(0,0,0,.85);
+    }
+  }
+  .body {
+    display: flex;
+    padding: 24px;
+    .card {
+      width: calc(100% / 3 - 48px);
+      margin-right: 24px;
+      padding: 48px 16px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(0,0,0,.85);
+      background-color: #fff;
+      border: 1px solid #e8e8e8;
+    }
+    .card:hover {
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+  }
+}

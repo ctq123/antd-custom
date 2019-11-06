@@ -1,0 +1,33 @@
+.content {
+  padding: 24px 24px 0;
+  .body {
+    padding: 24px;
+    background-color: #fff;
+    .bread {
+      padding-bottom: 16px;
+    }
+    hr {
+      height: 0px;
+      border: none;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+.form {
+  padding: 0px;
+  :global {
+    .ant-form-item {
+      display: flex;
+      margin-bottom: 16px;
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+}

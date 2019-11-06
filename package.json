@@ -1,19 +1,19 @@
 {
-  "name": "antd-custom",
-  "version": "0.0.1",
+  "name": "fe_srm2",
+  "version": "1.0.0",
   "description": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ctq123/antd-custom.git"
   },
-  "author": "ctq123",
-  "license": "ISC",
   "main": "dist/main.js",
   "scripts": {
     "lint": "./node_modules/standard/bin/cmd.js",
-    "start": "npm run dev",
-    "dev": "webpack-dev-server --mode development --port 3001",
+    "start": "npm run local",
+    "local": "webpack-dev-server --mode development --port 3001",
+    "build:dev": "webpack --mode production",
     "build:test": "webpack --mode production",
+    "build:pre": "webpack --mode production",
     "build:prod": "webpack --mode production"
   },
   "eslintConfig": {
@@ -29,7 +29,6 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "antd": "^3.23.4",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
     "babel-upgrade": "^1.0.1",
@@ -63,12 +62,14 @@
     "@lingui/macro": "^2.8.3",
     "@lingui/react": "^2.8.3",
     "@loadable/component": "^5.10.3",
+    "antd": "^3.24.3",
     "autoprefixer": "9.3.1",
     "axios": "^0.19.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "1.9.1",
+    "bizcharts": "^3.5.5",
     "cf-mock-server": "^1.0.14",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
@@ -79,10 +80,11 @@
     "file-loader": "2.0.0",
     "git-repo-info": "^2.1.0",
     "happypack": "^5.0.1",
-    "html-webpack-plugin": "3.2.0",
+    "html-webpack-plugin": "^4.0.0-beta.8",
     "intl": "^1.2.5",
     "less": "3.8.1",
     "less-loader": "4.1.0",
+    "lodash": "^4.17.15",
     "mini-css-extract-plugin": "0.4.5",
     "moment": "^2.24.0",
     "os": "^0.1.1",
@@ -101,7 +103,8 @@
     "url-loader": "^1.1.2",
     "webpack": "4.26.1",
     "webpack-cli": "3.1.2",
-    "webpack-dev-server": "3.1.10"
+    "webpack-dev-server": "3.1.10",
+    "xlsx": "^0.15.1"
   },
   "standard": {
     "globals": [
@@ -118,5 +121,8 @@
       "javascript",
       "javascriptreact"
     ]
-  }
+  },
+  "keywords": [
+    "generator-antd-custom"
+  ]
 }
