@@ -10,7 +10,9 @@
     "paths": {
       "@assets/*": ["assets/*"],
       "@src/*": ["src/*"],
+      "@components": ["src/components"],
       "@components/*": ["src/components/*"],
+      "@utils": ["src/utils"],
       "@utils/*": ["src/utils/*"],
       "@menus/*": ["src/menus/*"],
       "@locales/*": ["src/locales/*"],

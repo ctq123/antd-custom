@@ -7,7 +7,6 @@ import {
 } from 'bizcharts'
 import { Progress } from 'antd'
 import styles from './index.less'
-import axios from 'axios'
 
 const System = () => {
   const [data1, setData1] = useState([])

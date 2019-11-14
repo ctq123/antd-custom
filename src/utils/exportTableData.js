@@ -1,16 +1,8 @@
 import { outputXlsxFile } from '@utils/download-file'
 import ReactDOMServer from 'react-dom/server' 
-import ReactDom from 'react-dom'
 import { cloneDeep } from 'lodash'
 import { message } from 'antd'
 
-/**
- * 导出antd Table当前页数据
- * @param {数据源} dataSource 
- * @param {列} columns 
- * @param {导出文件名} fileName 
- * @param {需要剔除的列-名称} excludeCols 
- */
 export function exportPageData(dataSource=[], columns=[], fileName='', excludeCols=['操作']) {
   try {
     if (!Array.isArray(dataSource) || !Array.isArray(columns)) {
@@ -26,15 +18,14 @@ export function exportPageData(dataSource=[], columns=[], fileName='', excludeCo
     const sheetStyle = getSheetStyle(cols)
     const content = getContent(list, cols)
     const data = [header].concat(content)
-    fileName = fileName + '_' + Date.now()
     if (header.length) {
-      console.log("data", data)
+      // console.log("data", data)
       outputXlsxFile(data, sheetStyle, fileName)
     } else {
       throw Error('数据为空！')
     }
   } catch(e) {
-    message.error('导出失败！', e)
+    message.error('导出失败！' + e)
   }
 }
 
@@ -48,7 +39,7 @@ function getContent(dataSource=[], columns=[]) {
     columns.forEach(col => {
       const { dataIndex, render } = col || {}
       if (dataIndex) {
-        let val = row[dataIndex] || ''
+        let val = row[dataIndex]
         if (render) {
           const renderObj = render(val, row)
           if (renderObj.children) {

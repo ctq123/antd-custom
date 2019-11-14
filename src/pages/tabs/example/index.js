@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'antd'
 import { translateText } from '@utils/translate'
 import Connect from '@components/hoc/Connect'
-import { checkAccessPermission } from '@utils/permission'
+import utils from '@utils'
 import styles from './index.less'
 
 const Example = (props) => {
@@ -33,7 +33,7 @@ const Example = (props) => {
         <p>
           { translateText({ id: 'Here is a permission related button' }) }
           {
-            checkAccessPermission('module.adminButton') ?
+            utils.checkAccessPermission('module.adminButton') ?
             <Button type='primary'>{ translateText({ id: 'You have super permissions' }) }</Button>
             : null
           }

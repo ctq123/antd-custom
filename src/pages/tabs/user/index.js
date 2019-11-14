@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import { Table, Pagination, Button } from 'antd'
-import moment from 'moment'
 import { injectIntl } from 'react-intl'
 import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import { exportPageData } from '@utils/exportTableData'
