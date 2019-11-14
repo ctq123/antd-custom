@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 
 import { translateText } from '@utils/translate'
-// import avatarImg from '@assets/img/avatar.jpeg'
+import avatarImg from '@assets/img/avatar.jpeg'
 import { logout } from '@utils/handleLogin'
 
 const { SubMenu } = Menu
@@ -50,7 +50,7 @@ class Header extends PureComponent {
         />
         <div className={styles.rightcon}>
           {/* 语言菜单 */}
-          {/* <Menu
+          <Menu
             selectedKeys={[currentLanguage.key]}
             onClick={this.handleClickLanguage}
             mode="horizontal"
@@ -67,7 +67,7 @@ class Header extends PureComponent {
                 </Menu.Item>
               ))}
             </SubMenu>
-          </Menu> */}
+          </Menu>
           {/* 登陆用户问候语 */}
           <Menu key="user" mode="horizontal" onClick={this.handleClickSignout}>
             <SubMenu
@@ -77,7 +77,7 @@ class Header extends PureComponent {
                     {translateText({ id: 'Hi,' })}
                   </span>
                   <span>{username}</span>
-                  {/* <Avatar style={{ marginLeft: 8 }} src={avatarImg} /> */}
+                  <Avatar style={{ marginLeft: 8 }} src={avatarImg} />
                 </Fragment>
               }
             >

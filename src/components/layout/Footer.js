@@ -7,7 +7,7 @@ class Footer extends PureComponent {
   render() {
     return (
       <Layout.Footer className={styles.footer}>
-        CLUB FACTORY ©2019 Created by Web Front-end Team
+        XXXX ©2019 Created by Web Front-end Team
       </Layout.Footer>
     )
   }

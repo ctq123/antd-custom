@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Form, Row, Col, Input, Button, Select, message } from 'antd'
+import { Form, Row, Col, Input, Button, Select } from 'antd'
 import { injectIntl } from 'react-intl'
-import axios from 'axios'
+import utils from '@utils'
 import styles from './index.less'
 
 const FormItem = Form.Item
@@ -50,7 +50,7 @@ class SearchFormClass extends PureComponent {
       }
     })
     .catch(err => {
-      message.error(err['errorMsg'] || '查询失败！')
+      utils.showMessageError('查询用户列表失败', err)
     })
     .finally(()=> {
       onReaultCB && onReaultCB({ loading: false })

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Input, Form, message, Modal, Popconfirm } from 'antd'
+import { Button, Input, Form, Modal } from 'antd'
 import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import { debounce } from 'lodash'
+import utils from '@utils'
 import styles from './index.less'
-import axios from 'axios';
 
 const { TextArea } = Input
 const FormItem = Form.Item
@@ -83,14 +83,11 @@ const OutOfStock = (props) => {
     const data = { purchaseOrderUuids: res.result }
     axios.post('/manager/operation_tools/oos_rate/exception_process', JSON.stringify(data))
     .then(resp => {
-      message.success('操作成功！')
+      utils.showMessageSuccess('操作成功！')
       setNos('')
     })
     .catch(err => {
-      Modal.error({
-        title: '操作失败',
-        content: err['errorMsg'] || err
-      })
+      utils.showModalError('操作失败', err)
     })
   }
 

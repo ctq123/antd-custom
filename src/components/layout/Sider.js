@@ -3,7 +3,7 @@ import { Layout, Menu, Icon } from 'antd'
 import styles from './Sider.less'
 import { injectIntl } from 'react-intl'
 import { translateText } from '@utils/translate'
-import logoImg from '@assets/img/logo.svg'
+import logoImg from '@assets/img/logo3.svg'
 
 const { SubMenu } = Menu
 const MenuItem = Menu.Item
