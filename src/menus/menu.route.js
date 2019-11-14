@@ -1,6 +1,6 @@
 import React from "react"
 import { Route, Redirect } from 'react-router-dom'
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 
 /**
  * 根据index.route.js配置生成路由
@@ -9,7 +9,7 @@ import _ from 'lodash'
  */
 export function generateRoute (menuList = [], permList=null) {
   // 防止修改原数组
-  const menuListTmp = _.cloneDeep(menuList)
+  const menuListTmp = cloneDeep(menuList)
   // 读取所有index.route.js文件
   const routeList = require.context('../pages/tabs', true, /index\.route\.js/)
   // 已生成有效的路由(菜单有，路由不一定有效，如包含二级菜单的一级菜单)
@@ -111,7 +111,7 @@ export function getMenusMap(key = 'path', menuList=[]) {
  * @param {*} menuList 
  */
 export function getValidMenuList(key = 'path', menuList=[]) {
-  const newMenuList = _.cloneDeep(menuList)
+  const newMenuList = cloneDeep(menuList)
   // 已存在的菜单
   const existMenu = {}
   const filterMenus = (item) => {

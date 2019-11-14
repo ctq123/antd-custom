@@ -38,9 +38,9 @@ const progressPlugin = new ProgressBarWebpackPlugin({
 })
 
 const publishEnv = process.env.npm_lifecycle_event.replace('build:', '')
-const { branch } = GetRepoInfo()
+// const { branch } = GetRepoInfo()
 const envObj = publishEnv ? envConfig[publishEnv] : {}
-const RELEASE = `${envObj.ENV}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
+// const RELEASE = `${envObj.ENV}__${branch.replace('/', '_')}__${moment().format('MMDDHHmm')}`
 
 // const serverHost = 'http://localhost:8080'
 // const apiPrex = ''
@@ -51,7 +51,12 @@ const definePlugin = new webpack.DefinePlugin({
   CDN_URL: JSON.stringify(envObj.CDN_URL),
   AUTH_SERVICE: JSON.stringify(envObj.AUTH_SERVICE),
   PRODUCT_SERVICE: JSON.stringify(envObj.PRODUCT_SERVICE),
-  RELEASE: JSON.stringify(RELEASE)
+  RELEASE: JSON.stringify('')
+})
+
+const providePlugin = new webpack.ProvidePlugin({
+  axios: 'axios',
+  moment: 'moment',
 })
 
 // const uglifyjsPlugin = new UglifyJsPlugin({
@@ -114,13 +119,13 @@ module.exports = (env, argv) => {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]-[local]-[hash:5]',
+              localIdentName: '[local]-[hash:8]',
             }
           }, {
             loader: 'less-loader',
             options: {
               modules: true,
-              localIdentName: '[name]-[local]-[hash:5]',
+              localIdentName: '[local]-[hash:8]',
               javascriptEnabled: true,
             }
           }, {
@@ -163,7 +168,8 @@ module.exports = (env, argv) => {
       copyPlugin,
       progressPlugin,
       definePlugin,
-      happyPack
+      happyPack,
+      providePlugin,
     ],
     optimization: {
       splitChunks: {

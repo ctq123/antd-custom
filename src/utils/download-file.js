@@ -1,4 +1,4 @@
-import { message } from 'antd'
+import { showMessageError } from './handleError'
 import XLSX from 'xlsx'
 
 /**
@@ -42,8 +42,8 @@ export function downloadFile(url, params, msg) {
     a.download = filename
     a.click()
   })
-  .catch(error => {
-    message.error(`${msg}-${error}`)
+  .catch(err => {
+    showMessageError(msg, err)
   })
 }
 

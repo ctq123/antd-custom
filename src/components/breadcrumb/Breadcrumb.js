@@ -11,26 +11,25 @@ class Breadcrumbs extends PureComponent {
   constructor(props) {
     super(props)
     // console.log("props", props)
-    const { pathname } = (props.history && props.history.location) || {}
+    const { path } = props.match
     this.historyListener(props.history)
     this.menusPathMap = getMenusMap('path', props.menuList)
     this.routePathMap = props.existRoute
     this.state = {
       menuLen: 0,
-      items: this.getItems(pathname),
+      items: this.getItems(path),
     }
   }
 
   componentDidUpdate() {
-    const { menuList, history, existRoute } = this.props
+    const { menuList, match, existRoute } = this.props
     // console.log("this.props", this.props)
     if (menuList && menuList.length != this.state.menuLen) {
       this.menusPathMap = getMenusMap('path', menuList)
       this.routePathMap = existRoute
-      const { pathname } = (history && history.location) || {}
       this.setState({
         menuLen: menuList.length,
-        items: this.getItems(pathname)
+        items: this.getItems(match.path)
       })
     }
   }
@@ -41,12 +40,12 @@ class Breadcrumbs extends PureComponent {
 
   historyListener = (history) => {
     // 处理输入url地址，触发面包屑变化
-    this.unlisten = history && history.listen(location => {
-      const { pathname } = location || {}
-      // console.log("Breadcrumbs location", location)
-      if (pathname) {
+    this.unlisten = history && history.listen(() => {
+      const { path } = this.props.match
+      // console.log("Breadcrumbs path", path)
+      if (path) {
         this.setState({
-          items: this.getItems(pathname)
+          items: this.getItems(path)
         })
       }
     })
@@ -62,15 +61,15 @@ class Breadcrumbs extends PureComponent {
       for(let i = 2; i <= paths.length; i++) {
         let p = paths.slice(0, i).join('/')
         if (this.menusPathMap[p]) {
-          const { transKey, name } = this.menusPathMap[p]
+          const { name, transKey } = this.menusPathMap[p]
           keys.push(p)
-          names.push(name)
           trans.push(transKey)
+          names.push(name)
         } else if (this.routePathMap[p]) {
-          const { transKey, name } = this.routePathMap[p]
+          const { name, transKey } = this.routePathMap[p]
           keys.push(p)
-          names.push(name)
           trans.push(transKey)
+          names.push(name)
         }
       }
     }
