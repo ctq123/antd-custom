@@ -1,6 +1,7 @@
 import React from "react"
-import { Route, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { cloneDeep } from 'lodash'
+import BoundaryRoute from '@components/hoc/BoundaryRoute'
 
 /**
  * 根据index.route.js配置生成路由
@@ -30,7 +31,7 @@ export function generateRoute (menuList = [], permList=null) {
          */
         if (!permList || permKey === true || permList.includes(permKey)) {
           existRoute[key] = { name, transKey, routeProps: { path: key } }
-          return <Route key={key} exact={true} { ...routeProps } />
+          return <BoundaryRoute key={key} exact={true} { ...routeProps } />
         }
       } else {
         const m = existRoute[key]
