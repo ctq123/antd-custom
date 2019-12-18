@@ -37,7 +37,7 @@ export function clearCookie(cname) {
 export function devSetCookieToken() {
   console.log("NODE_ENV", NODE_ENV)
   // 注意local才是本地开发环境，dev是develop分支环境
-  if (NODE_ENV === 'local') {// 本地开发环境
+  if (NODE_ENV === 'local' || NODE_ENV === 'dev') {
     setCookie('token', '123456', 1)
   }
 }
