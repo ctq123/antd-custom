@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
-import { Table, Pagination, Button } from 'antd'
+import { Button } from 'antd'
 import { injectIntl } from 'react-intl'
 import Breadcrumb from '@components/breadcrumb/Breadcrumb'
-import { exportPageData } from '@utils/exportTableData'
-import SearchForm from './searchForm'
+import utils from '@utils'
+import TableBlock from '@components/table/TableBlock'
+import SearchForm from './SearchForm'
 import styles from './index.less'
 
 class User extends PureComponent {
@@ -46,7 +47,7 @@ class User extends PureComponent {
       data: [],
       loading: false,
       pagination: {
-        pageNum: 1,
+        current: 1,
         pageSize: 10,
         total: 0,
       },
@@ -57,25 +58,13 @@ class User extends PureComponent {
     this.callFormSearch()
   }
 
-  onShowSizeChange = (cur_page, page_size) => {
-    // console.log(cur_page, page_size)
+  handleSearch = ({ current, pageSize }) => {
     const { pagination } = this.state
     this.setState({
       pagination: {
         ...pagination,
-        pageNum: 1,
-        pageSize: page_size
-      }
-    }, () => { this.callFormSearch() })
-  }
-
-  onChange = (page) => {
-    // console.log(page)
-    const { pagination } = this.state
-    this.setState({
-      pagination: {
-        ...pagination,
-        pageNum: page,
+        current,
+        pageSize,
       }
     }, () => { this.callFormSearch() })
   }
@@ -84,10 +73,13 @@ class User extends PureComponent {
     this.form && this.form.handleSearch(data)
   }
 
-  handleReaultCB = (resp = {}) => {
-    this.setState({
-      ...resp
-    })
+  handleReaultCB = ({ loading, data, pagination }) => {
+    if (loading !== undefined) {
+      this.setState({ loading })
+    }
+    if (data !== undefined) {
+      this.setState({ data, pagination })
+    }
   }
 
   handleLoadingCB = (loading) => {
@@ -96,18 +88,27 @@ class User extends PureComponent {
 
   exportData = (e) => {
     const { data, columns } = this.state
-    exportPageData(data, columns, '用户管理')
+    utils.exportPageData(data, columns, '用户管理')
   }
 
 
   render() {
     const { data, columns, loading, pagination } = this.state
-    const { intl } = this.props
     const formProps = {
       loading,
       pagination,
-      onReaultCB: this.handleReaultCB,
-      onLoadingCB: this.handleLoadingCB
+      onResultCB: this.handleReaultCB,
+    }
+
+    const tableBlockProps = {
+      tableProps: {
+        dataSource: data,
+        columns,
+        loading,
+      },
+      paginationProps: pagination,
+      searchCB: this.handleSearch,
+      leftTopNode: <Button type="primary" onClick={(e) => exportData(e)}>导出当前页</Button>
     }
 
     return (
@@ -118,18 +119,7 @@ class User extends PureComponent {
           </div>
           <SearchForm wrappedComponentRef={(form) => this.form = form} { ...formProps } />
           <hr />
-          <div className={styles.flex}>
-            <Button type="primary" onClick={(e) => this.exportData(e)}>导出当前页</Button>
-            <Pagination 
-              className='pagination-right'
-              showSizeChanger
-              showTotal={total => `${intl.formatMessage({id: 'total items'}, { value: total })}`}
-              current={pagination.pageNum} 
-              total={pagination.total} 
-              onShowSizeChange={this.onShowSizeChange}
-              onChange={this.onChange} />
-          </div>
-          <Table bordered pagination={false} columns={columns} dataSource={data} rowKey='id' loading={loading} />
+          <TableBlock { ...tableBlockProps } />
         </div>
       </aside>
     )

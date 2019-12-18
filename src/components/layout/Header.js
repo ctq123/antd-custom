@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Layout, Menu, Icon, Avatar } from 'antd'
 import styles from './Header.less'
-import { connect } from 'react-redux'
+import Connect from '@components/hoc/Connect'
 import { injectIntl } from 'react-intl'
 
 import { translateText } from '@utils/translate'
@@ -92,13 +92,4 @@ class Header extends PureComponent {
   }
 }
 
-const mapStateToProp = (state) => {
-  const { app } = state
-  return app
-}
-
-const mapDispatchToProp = (dispatch) => {
-  return { dispatch }
-}
-
-export default connect(mapStateToProp, mapDispatchToProp)(injectIntl(Header))
+export default Connect(injectIntl(Header), ({ app }) => (app))
