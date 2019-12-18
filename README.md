@@ -2,6 +2,8 @@
 
 ---
 
+## 预览地址：https://awesome-goldstine-efd4b4.netlify.com/#/app/exchange
+
 ## 说明
 
 该基础框架采用第三方依赖包都是目前最新版本，结合antd的UI框架，实现主题定制，webpack自主配置，动态菜单路由设计，redux数据管理，国际化多语言，错误统一处理，本地mock服务等功能。
