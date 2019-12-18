@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl'
 import Breadcrumb from '@components/breadcrumb/Breadcrumb'
 import utils from '@utils'
 import TableBlock from '@components/table/TableBlock'
-import SearchForm from './SearchForm'
+import SearchForm from './searchForm'
 import styles from './index.less'
 
 class User extends PureComponent {
