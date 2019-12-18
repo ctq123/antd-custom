@@ -53,6 +53,20 @@ export const menus = [
     permKey: 'srm.route_example', 
     children: [] 
   },
+  { 
+    name: '虚拟表格', 
+    path: '/app/vtable', 
+    icon: 'table', 
+    permKey: true, 
+    children: [] 
+  },
+  { 
+    name: '数据转换', 
+    path: '/app/exchange', 
+    icon: 'box-plot', 
+    permKey: true, 
+    children: [] 
+  },
   {
     name: '运营工具', 
     path: '/app/optool', 

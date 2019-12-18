@@ -7,6 +7,7 @@ import Connect from '@components/hoc/Connect'
 
 
 const BreadcrumbItem = Breadcrumb.Item 
+/**根据输入url切割成面包屑 */
 class Breadcrumbs extends PureComponent {
   constructor(props) {
     super(props)

@@ -16,7 +16,9 @@ exports.api = {
   'GET /api/chart2': 'home/chart2.json',
   // 获取增加量
   'GET /api/increment/async': 'home/increment.json',
-  // 获取用户列表
-  'GET /api/user/list?pageNum=*': 'user/user.json',
+   // 获取用户列表
+   'GET /api/user/list?pageNum=*': 'user/user.json',
+  // 获取角色列表
+  'GET /api/role/list?pageNum=*': 'user/role.json',
   
 }

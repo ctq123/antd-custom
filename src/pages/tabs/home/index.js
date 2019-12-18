@@ -5,8 +5,8 @@ const Home = (props) => {
 
   return (
     <aside className={styles.content}>
-      <div className={styles.body}>
-        <h2>欢迎使用XXXX系统</h2>
+      <div className={'middle ph100'}>
+        <h2 className='colorRed'>欢迎使用XXXX系统</h2>
       </div>
     </aside>
   )

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { IntlProvider } from 'react-intl'
 import { ConfigProvider } from 'antd'
-import { connect } from 'react-redux'
+import Connect from '@components/hoc/Connect'
 // antd组件语言
 import antd_en_US from 'antd/es/locale/en_US'
 import antd_zh_CN from 'antd/es/locale/zh_CN'
@@ -49,9 +49,4 @@ class ReactIntlProvider extends PureComponent {
   }
 }
 
-const mapStateToProp = (state) => {
-  const { app } = state
-  return app
-}
-
-export default connect(mapStateToProp, null)(ReactIntlProvider)
+export default Connect(ReactIntlProvider, ({ app }) => (app))

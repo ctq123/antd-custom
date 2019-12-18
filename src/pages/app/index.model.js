@@ -25,6 +25,7 @@ const model = {
     ],
     menuList: [],
     existRoute: {}, // 用户路由列表
+    isNeedPermission: true, /** 是否需要菜单-路由权限控制，默认需要; 若设置为false，所有的permKey可以去掉 */
   },
   // reducer
   reducers: {
@@ -37,6 +38,18 @@ const model = {
         ...state, 
         language
       }
+    },
+    'app/get/menus': (state, action) => {      
+      sessionStorage.setItem('username', '开发者')
+      if (menus) {
+        // 过滤无效菜单
+        const validMenus = getValidMenuList('path', menus)
+        return {
+          ...state,
+          menuList: validMenus,
+        }
+      }
+      return { ...state }
     },
     'app/get/permission/success': (state, action) => {
       const { permList, username } = action.payload || {}

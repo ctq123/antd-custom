@@ -50,7 +50,6 @@ const definePlugin = new webpack.DefinePlugin({
   NODE_ENV: JSON.stringify(envObj.ENV),
   CDN_URL: JSON.stringify(envObj.CDN_URL),
   AUTH_SERVICE: JSON.stringify(envObj.AUTH_SERVICE),
-  PRODUCT_SERVICE: JSON.stringify(envObj.PRODUCT_SERVICE),
   RELEASE: JSON.stringify('')
 })
 
@@ -99,7 +98,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.join(__dirname, './dist/'),
-      publicPath: envObj.CDN_URL,
+      // publicPath: envObj.CDN_URL, // 配置cdn地址
       filename: 'js/[name]-[chunkhash:8].js',
       chunkFilename: 'js/[name]-[chunkhash:8].js'
     },

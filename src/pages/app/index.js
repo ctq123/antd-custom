@@ -1,7 +1,6 @@
 import React, { PureComponent, Fragment, lazy, Suspense } from 'react'
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
-import { Layout, Button } from 'antd'
-import { connect } from 'react-redux'
+import { Switch, Redirect, withRouter } from 'react-router-dom'
+import { Layout } from 'antd'
 import Header from '@components/layout/Header'
 import Sider from '@components/layout/Sider'
 import Footer from '@components/layout/Footer'
@@ -10,6 +9,7 @@ import { generateRoute } from '@menus/menu.route'
 import { getCookie, devSetCookieToken } from '@utils/handleCookie'
 import { setAxiosToken } from '@utils/handleAxios'
 import { toLoginPage } from '@utils/handleLogin'
+import Connect from '@components/hoc/Connect'
 
 const { Content } = Layout
 
@@ -29,20 +29,26 @@ class AppPage extends PureComponent {
   }
   
   componentDidMount() {
-    const { dispatch } = this.props
+    const { dispatch, isNeedPermission } = this.props
     // 设置本地开发环境cookie的token
     devSetCookieToken()
 
     const token = getCookie('token')
     if (token) {
       setAxiosToken(token)
-      // 获取用户权限列表
-      dispatch({
-        type: 'app/get/permission',
-        payload: {
-          token
-        }
-      })
+      if (isNeedPermission) {// 需要菜单和路由权限
+        // 获取用户权限列表
+        dispatch({
+          type: 'app/get/permission',
+          payload: {
+            token
+          }
+        })
+      } else {// 不需要菜单和路由权限
+        dispatch({
+          type: 'app/get/menus',
+        })
+      }
     } else {
       // 转跳登陆页面
       toLoginPage()
@@ -50,13 +56,23 @@ class AppPage extends PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { menuList } = nextProps
+    const { menuList, isNeedPermission } = nextProps
     if (menuList) {
-      // 根据用户权限菜单重新生成路由
-      if (menuList.length != prevState.menuLen) {
-        const permStr = sessionStorage.getItem('permission')
-        const permList = permStr ? JSON.parse(permStr) : []
-        const { routes, existRoute, redirects } = generateRoute(menuList, permList)
+      if (isNeedPermission) {// 需要菜单和路由权限
+        // 根据用户权限菜单重新生成路由
+        if (menuList.length != prevState.menuLen) {
+          const permStr = sessionStorage.getItem('permission')
+          const permList = permStr ? JSON.parse(permStr) : []
+          const { routes, existRoute, redirects } = generateRoute(menuList, permList)
+          return {
+            routes,
+            existRoute,
+            redirects,
+            menuLen: menuList.length
+          }
+        }
+      } else {// 不需要菜单和路由权限
+        const { routes, existRoute, redirects } = generateRoute(menuList, null)
         return {
           routes,
           existRoute,
@@ -125,16 +141,4 @@ class AppPage extends PureComponent {
   }
 }
 
-const mapStateToProp = (state) => {
-  const { login, app } = state
-  return {
-    ...login,
-    menuList: app.menuList,
-  }
-}
-
-const mapDispatchToProp = (dispatch) => {
-  return { dispatch }
-}
-
-export default connect(mapStateToProp, mapDispatchToProp)(withRouter(AppPage))
+export default Connect(withRouter(AppPage), ({ app }) => (app))

@@ -1,0 +1,26 @@
+{
+  "errorMessages": [],
+  "model": {
+    "pageNo": 1,
+    "pageSize": 10,
+    "rows": [
+      {
+        "id": 1,
+        "name": "开发",
+        "perms": "menu.system,menu.userManage,menu.roleManage",
+        "creator": "admin",
+        "createTime": 1569081610600
+      },
+      {
+        "id": 2,
+        "name": "测试",
+        "perms": "menu.system,menu.roleManage",
+        "creator": "admin",
+        "createTime": 1569081614900
+      }
+    ],
+    "totalCount": 100
+  },
+  "success": true,
+  "firstErrorMessage": null
+}
