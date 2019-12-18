@@ -32,15 +32,16 @@
 + [10.安全CSRF防范](#function.csrf)
 + [11.导出当前页](#function.export)
 
-## 初始化项目（下载的是master分支）
+## 初始化项目
 ```bash
-$ npm i yo -g
 $ npm i generator-antd-custom -g
-$ yo antd-custom
+$ cfe init react
 ```
 
-## 切换至指定版本分支
+## 切换至指定版本分支（需要用git初始化项目）
 ```bash
+$ git init
+$ git clone https://github.com/ctq123/antd-custom.git
 $ git checkout N
 N = test || develop || pre
 ```
